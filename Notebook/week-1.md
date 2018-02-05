@@ -2,7 +2,7 @@
 
 ## Progress Made:
 
-### Entry by Steven Park
+### Entry by Steven Park:
 For the first week, there were two main goals for our group: 
 1. Establish a basic design (shape, wheels, sensors, actuators, etc.) for our robot.
 2. Start building the prototype so that, at the very least, it can move forward.
@@ -27,10 +27,10 @@ The first goal, obviously, was to get the two servos to move in the same directi
 However, due to my lack of experience with using servo motors (I'm more familiar with stepper motors), I had trouble with even this basic task and I could not for the life of me figure out why.
 The two lines of code that I had trouble with was the following:
 
-'''
+```
 LeftWheel.write(180);
 RightWheel.write(0);
-'''
+```
 
 I was informed that plugging in 0 would cause the servo to move at full speed in one direction while plugging in 180 would move it full speed in the other direction.
 But no matter what number I plugged in or what modifications I made in the code, a problem would always appear:
@@ -57,7 +57,7 @@ A new body was created (thanks to Wenxuan) and the circuit on the breadboard was
 By the end of week 2, we hope to have connected the camera to the Arduino and integrate that to the code so that the robot not only move towards a certain color but also avoid the white tape so that it doesn't move out of bounds.
 
 
-###Entry by Shihan (Write about the progress with the camera)
+### Entry by Shihan (Write about the progress with the camera)
 
 
 ## Division of Labor
@@ -65,7 +65,7 @@ By the end of week 2, we hope to have connected the camera to the Arduino and in
 - Set up the Arduino breadboard circuit
 - Wrote the main Arduino code
 
-** Wenxuan Guo**
+**Wenxuan Guo**
 - Constructed the body of the robot
 - Researched the workings of the Pixy camera
 
