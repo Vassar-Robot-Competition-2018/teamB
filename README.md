@@ -1,6 +1,7 @@
-# teamB
+# Team B (Name Pending)
 
-
-Steven Park (corrected)
-test change
+Group Members:
+- Steven Park
+- Wenxuan Guo
+- Shihan Zhao
 
