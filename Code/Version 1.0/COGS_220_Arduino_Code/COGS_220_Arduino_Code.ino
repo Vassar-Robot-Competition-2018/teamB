@@ -18,6 +18,7 @@ String readInstructions;
 //Variables that store the servo pins
 const int leftServoPin = 6;             //Pin #6
 const int rightServoPin = 7;            //Pin #7
+const int lineSensor = 5;
 
 void setup() {
   /*
@@ -218,6 +219,11 @@ void dty() {
   }
 }
 
+void detectWhite() {
+  if (lineSensor.digitalRead() == HIGH) {
+    Drive(-50, -50, 1);
+  }
+}
 
 void Drive(float ls, float rs, float d) {
   /*
