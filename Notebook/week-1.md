@@ -60,7 +60,7 @@ By the end of week 2, we hope to have connected the camera to the Arduino and in
 ### Entry by Shihan (Write about the progress with the camera)
 
 ### Entry by Wenxuan
-We were working during the weekend and we did not know that there is line detectors using to diffrentiate white and grey, so I came up with the idea to build an internal map. Thus the robot would know when to stop before it crosses the boundary. Since other colored boundaries could be detected and the length and width of the arena are given and fixed, so we just need to track the position of the robot constantly by measuring its distance travelled from the colored boundary and subtracting the distance from the given length of each quadrant. However, I then found out that our servos didn't have potentiometers to count the rotations, so we might need an external potentiometer to construct an internal map. 
+We were working during the weekend and we did not know that there are line detectors used to diffrentiate white and grey (pixy cameras suck at detecting objects with no hues), so I came up with the idea to build an internal map. Thus the robot would know when to stop before it crosses the boundary. Since other colored boundaries could be detected and the length and width of the arena are given and fixed, so we just need to track the position of the robot constantly by measuring its distance travelled from the colored boundary and subtracting the distance from the given length of each quadrant. However, I then found out that our servos didn't have potentiometers to count the rotations, so we might need an external potentiometer to construct an internal map. 
 
 ## Division of Labor
 **Steven Park**
