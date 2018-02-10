@@ -21,8 +21,6 @@ const int leftServoPin = 6;             //Pin #6
 const int rightServoPin = 7;            //Pin #7
 const int QREPin = 1;
 
-
-
 void setup() {
   /*
      For continuous servos, the range of values (called microseconds) that the servo will accept is from 1000 to 2000.
@@ -32,7 +30,7 @@ void setup() {
      Right now, the code can only move forwards.
      By the way, auto-indent is Ctrl-t.
   */
-  /*
+  
   //initialize camera
   camera.init();
 
@@ -44,7 +42,6 @@ void setup() {
   //Attach the servo objects to the servos on the respective pins
   LeftWheel.attach(leftServoPin);
   RightWheel.attach(rightServoPin);
-  */
   
   //Setting the Serial Monitor:
   //The Serial Monitor will be used to give commands to the robot and keep track of those commands.
@@ -54,6 +51,7 @@ void setup() {
 
 
 void loop() {
+
   /*
   //Sets up the Serial Monitor
   while(Serial.available()){
@@ -81,16 +79,14 @@ void loop() {
     else{
       Serial.print("Please type in a value that fits within the range of 1000 to 2000"); 
     }
+  }
 
     //Empty the command line for the next input
     readInstructions = "";
-  }
-  */
+    */
 
-  int QRE_Value = readQR();
-  while(true){
-    Serial.println(QRE_Value);
-  }
+    dtr();
+    
 }
 
 //Drives towards the closest red block
@@ -290,10 +286,6 @@ void EscapeBack(){
 //detect Dark vs. Light objects
 //lower number (lower than 3000) means light objects
 int readQR(){
-  pinMode(QREPin, OUTPUT);
-  digitalWrite(QREPin, HIGH);
-  delayMicroseconds(10);
-  pinMode(QREPin, INPUT);
 
   unsigned long TIME = micros();
 
