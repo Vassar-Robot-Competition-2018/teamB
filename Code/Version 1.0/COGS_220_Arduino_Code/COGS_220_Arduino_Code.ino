@@ -8,6 +8,7 @@
 #include <SPI.h>
 #include <Pixy.h>
 
+
 //Create the servo objects
 Servo LeftWheel;
 Servo RightWheel;
@@ -20,7 +21,7 @@ const int leftServoPin = 6;             //Pin #6
 const int rightServoPin = 7;            //Pin #7
 const int QREPin = 1;
 
-const int QRE_Value = readQR();
+
 
 void setup() {
   /*
@@ -31,6 +32,7 @@ void setup() {
      Right now, the code can only move forwards.
      By the way, auto-indent is Ctrl-t.
   */
+  /*
   //initialize camera
   camera.init();
 
@@ -42,16 +44,17 @@ void setup() {
   //Attach the servo objects to the servos on the respective pins
   LeftWheel.attach(leftServoPin);
   RightWheel.attach(rightServoPin);
-
+  */
+  
   //Setting the Serial Monitor:
   //The Serial Monitor will be used to give commands to the robot and keep track of those commands.
   Serial.begin(9600);
-  Serial.println("Instructions for the Robot: Enter value from 1000 to 2000");
+  //Serial.println("Instructions for the Robot: Enter value from 1000 to 2000");
 }
 
 
 void loop() {
-
+  /*
   //Sets up the Serial Monitor
   while(Serial.available()){
     char c = Serial.read();
@@ -81,6 +84,12 @@ void loop() {
 
     //Empty the command line for the next input
     readInstructions = "";
+  }
+  */
+
+  int QRE_Value = readQR();
+  while(true){
+    Serial.println(QRE_Value);
   }
 }
 
@@ -275,24 +284,25 @@ int getMax(float* array)
 }
 
 void EscapeBack(){
-  drive (-50, -50, 100);
+  Drive (-50, -50, 100);
 }
 
 //detect Dark vs. Light objects
 //lower number (lower than 3000) means light objects
-int readQD(){
+int readQR(){
   pinMode(QREPin, OUTPUT);
   digitalWrite(QREPin, HIGH);
   delayMicroseconds(10);
-  pinMode(QREPin, INPUT):
+  pinMode(QREPin, INPUT);
 
-  long time = micros();
+  unsigned long TIME = micros();
 
   //time how long the input is HIGH, but quit after 3ms.
-  while(digitalRead(QREPin) == HIGH && micros() - time < 3000) {
-    int diff = micros() - time;
-    println("HIGH input lasts %d", diff);
+  while(digitalRead(QREPin) == HIGH && micros() - TIME < 3000) {
+    int diff = micros() - TIME;
+    printf("HIGH input lasts %d", diff);
     return diff;
   }
 }
+
 
