@@ -18,7 +18,9 @@ String readInstructions;
 //Variables that store the servo pins
 const int leftServoPin = 6;             //Pin #6
 const int rightServoPin = 7;            //Pin #7
-const int lineSensor = 5;
+const int QREPin = 1;
+
+const int QRE_Value = readQR();
 
 void setup() {
   /*
@@ -26,12 +28,11 @@ void setup() {
      - 1000 is counter-clockwise at full speed
      - 1500 is no movement
      - 2000 is clockwise at full speed
-
      Right now, the code can only move forwards.
      By the way, auto-indent is Ctrl-t.
   */
   //initialize camera
-  Pixy.init();
+  camera.init();
 
   //Set the initial servo positions:
   LeftWheel.writeMicroseconds(1500);
@@ -85,18 +86,23 @@ void loop() {
 
 //Drives towards the closest red block
 void dtr() {
+
+  uint16_t blocks;
+  int targetIndex;
+  float targetX;
+  float direct;
   
   //fetch all color blocks for further processing
   blocks = camera.getBlocks();
 
   //the largest block will be the target
-  float sizes[];
+  float sizes[sizeof(blocks)];
 
   //use x-coordinate to guide
-  float x[];
+  float x[sizeof(blocks)];
 
   //get all red blocks
-  for (int i = 0; i < sizeOf(blocks); i++) {
+  for (int i = 0; i < sizeof(blocks); i++) {
     if (camera.blocks[i].signature == 1) {
       sizes[i] = camera.blocks[i].width * camera.blocks[i].height;
       x[i] = camera.blocks[i].x;
@@ -119,18 +125,23 @@ void dtr() {
 
 //Drives towards the closest green block
 void dtg() {
+
+  uint16_t blocks;
+  int targetIndex;
+  float targetX;
+  float direct;
   
   //fetch all color blocks for further processing
   blocks = camera.getBlocks();
 
   //the largest block will be the target
-  float sizes[];
+  float sizes[sizeof(blocks)];
 
   //use x-coordinate to guide
-  float x[];
+  float x[sizeof(blocks)];
 
   //get all green blocks
-  for (int i = 0; i < sizeOf(blocks); i++) {
+  for (int i = 0; i < sizeof(blocks); i++) {
     if (camera.blocks[i].signature == 2) {
       sizes[i] = camera.blocks[i].width * camera.blocks[i].height;
       x[i] = camera.blocks[i].x;
@@ -153,18 +164,23 @@ void dtg() {
 
 //Drives towards the closest blue block
 void dtb() {
+
+  uint16_t blocks;
+  int targetIndex;
+  float targetX;
+  float direct;
   
   //fetch all color blocks for further processing
   blocks = camera.getBlocks();
 
   //the largest block will be the target
-  float sizes[];
+  float sizes[sizeof(blocks)];
 
   //use x-coordinate to guide
-  float x[];
+  float x[sizeof(blocks)];
 
   //get all blue blocks
-  for (int i = 0; i < sizeOf(blocks); i++) {
+  for (int i = 0; i < sizeof(blocks); i++) {
     if (camera.blocks[i].signature == 3) {
       sizes[i] = camera.blocks[i].width * camera.blocks[i].height;
       x[i] = camera.blocks[i].x;
@@ -187,18 +203,23 @@ void dtb() {
 
 //Drives towards the closest yellow block
 void dty() {
+
+  uint16_t blocks;
+  int targetIndex;
+  float targetX;
+  float direct;
   
   //fetch all color blocks for further processing
   blocks = camera.getBlocks();
 
   //the largest block will be the target
-  float sizes[];
+  float sizes[sizeof(blocks)];
 
   //use x-coordinate to guide
-  float x[];
+  float x[sizeof(blocks)];
 
   //get all yellow blocks
-  for (int i = 0; i < sizeOf(blocks); i++) {
+  for (int i = 0; i < sizeof(blocks); i++) {
     if (camera.blocks[i].signature == 4) {
       sizes[i] = camera.blocks[i].width * camera.blocks[i].height;
       x[i] = camera.blocks[i].x;
@@ -219,11 +240,13 @@ void dty() {
   }
 }
 
+/*
 void detectWhite() {
   if (lineSensor.digitalRead() == HIGH) {
     Drive(-50, -50, 1);
   }
 }
+*/
 
 void Drive(float ls, float rs, float d) {
   /*
@@ -236,7 +259,7 @@ void Drive(float ls, float rs, float d) {
 }
 
 //helper function used to get the minimum index from a list
-int getMax(int* array)
+int getMax(float* array)
 {
   int maxIndex = 0;
   int size = sizeof(array);
@@ -250,3 +273,26 @@ int getMax(int* array)
   }
   return maxIndex;
 }
+
+void EscapeBack(){
+  drive (-50, -50, 100);
+}
+
+//detect Dark vs. Light objects
+//lower number (lower than 3000) means light objects
+int readQD(){
+  pinMode(QREPin, OUTPUT);
+  digitalWrite(QREPin, HIGH);
+  delayMicroseconds(10);
+  pinMode(QREPin, INPUT):
+
+  long time = micros();
+
+  //time how long the input is HIGH, but quit after 3ms.
+  while(digitalRead(QREPin) == HIGH && micros() - time < 3000) {
+    int diff = micros() - time;
+    println("HIGH input lasts %d", diff);
+    return diff;
+  }
+}
+
