@@ -51,7 +51,6 @@ void setup() {
 
 
 void loop() {
-
   /*
   //Sets up the Serial Monitor
   while(Serial.available()){
@@ -85,7 +84,7 @@ void loop() {
     readInstructions = "";
     */
 
-    dtr();
+  dtr();
     
 }
 
@@ -121,11 +120,10 @@ void dtr() {
 
   //x ranges between 0 and 329, so midpoint is 165
   //store targetX-165 as reference for Drive()
-  if(direct < 0){
-    Serial.println("test");
-  }
-  else if(direct >= 0) {
-    Serial.println("red");
+  if (direct < 0) {
+    Drive(0, -direct * 50/165, 10);
+  } else {
+    Drive(direct * 50/165, 0, 10);
   }
 }
 
@@ -162,9 +160,9 @@ void dtg() {
   direct = targetX - 165;
 
   if (direct < 0) {
-    Drive(0, -direct/50, 10);
+    Drive(0, -direct * 50/165, 10);
   } else {
-    Drive(direct/50, 0, 10);
+    Drive(direct * 50/165, 0, 10);
   }
 }
 
@@ -201,9 +199,9 @@ void dtb() {
   direct = targetX - 165;
 
   if (direct < 0) {
-    Drive(0, -direct/50, 10);
+    Drive(0, -direct* 50/165, 10);
   } else {
-    Drive(direct/50, 0, 10);
+    Drive(direct * 50/165, 0, 10);
   }
 }
 
@@ -240,19 +238,11 @@ void dty() {
   direct = targetX - 165;
 
   if (direct < 0) {
-    Drive(0, -direct/50, 10);
+    Drive(0, -direct * 50/165, 10);
   } else {
-    Drive(direct/50, 0, 10);
+    Drive(direct * 50/165, 0, 10);
   }
 }
-
-/*
-void detectWhite() {
-  if (lineSensor.digitalRead() == HIGH) {
-    Drive(-50, -50, 1);
-  }
-}
-*/
 
 void Drive(float ls, float rs, float d) {
   /*
@@ -260,7 +250,7 @@ void Drive(float ls, float rs, float d) {
    * d is in microseconds
    */
    LeftWheel.writeMicroseconds(1500 + 10 * ls);
-   RightWheel.writeMicroseconds(1500 + 10 * ls);
+   RightWheel.writeMicroseconds(1500 + -10 * rs);
    delay(d);
 }
 
@@ -287,8 +277,13 @@ void EscapeBack(){
 //detect Dark vs. Light objects
 //lower number (lower than 3000) means light objects
 int readQR(){
-
-  unsigned long TIME = micros();
+  
+  pinMode( QREPin, OUTPUT );
+  digitalWrite( QREPin, HIGH );
+  delayMicroseconds(10);
+  pinMode( QREPin, INPUT );
+  
+  long TIME = micros();
 
   //time how long the input is HIGH, but quit after 3ms.
   while(digitalRead(QREPin) == HIGH && micros() - TIME < 3000) {
