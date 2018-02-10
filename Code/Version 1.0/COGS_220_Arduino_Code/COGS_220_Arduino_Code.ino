@@ -116,15 +116,16 @@ void dtr() {
 
   targetIndex = getMax(sizes);
   targetX = x[targetIndex];
+  direct = targetX - 165;
+  
 
   //x ranges between 0 and 329, so midpoint is 165
   //store targetX-165 as reference for Drive()
-  direct = targetX - 165;
-
-  if (direct < 0) {
-    Drive(0, -direct/50, 10);
-  } else {
-    Drive(direct/50, 0, 10);
+  if(direct < 0){
+    Serial.println("test");
+  }
+  else if(direct >= 0) {
+    Serial.println("red");
   }
 }
 
