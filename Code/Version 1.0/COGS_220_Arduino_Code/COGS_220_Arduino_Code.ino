@@ -7,7 +7,7 @@
 #include <Servo.h>
 #include <SPI.h>
 #include <Pixy.h>
-
+#include <avr/sleep.h>
 
 //Create the servo objects
 Servo LeftWheel;
@@ -16,10 +16,30 @@ Pixy camera;
 
 String readInstructions;
 
-//Variables that store the servo pins
+//sensors & servos & LED & switch pins
+//NOTE: DO NOT USE pin 0 or pin 1
 const int leftServoPin = 6;             //Pin #6
 const int rightServoPin = 7;            //Pin #7
-const int QREPin = 1;
+const int QREPin;
+const int switchPin = 2;                //NOTE: can only use pin 2 and pin 3, attachInterrupt() need to be changed if pin changes
+const int LEDR;
+const int LEDG;
+const int LEDB;
+
+//global variables
+int buttonPushed;
+
+void wake() {
+  buttonPushed = 0;
+  Serial.println("Rebooting...");
+}
+
+void toggle(){
+  detachInterrupt(0);    
+  if (buttonPushed == 0) { 
+    buttonPushed = 1;      
+  }
+}
 
 void setup() {
   /*
@@ -38,6 +58,11 @@ void setup() {
   LeftWheel.writeMicroseconds(1500);
   RightWheel.writeMicroseconds(1500);
 
+  //set input and output pins
+  pinMode(switchPin, INPUT);
+  pinMode(LEDR, OUTPUT);
+  pinMode(LEDG, OUTPUT);
+  pinMode(LEDB, OUTPUT);
 
   //Attach the servo objects to the servos on the respective pins
   LeftWheel.attach(leftServoPin);
@@ -47,8 +72,16 @@ void setup() {
   //The Serial Monitor will be used to give commands to the robot and keep track of those commands.
   Serial.begin(9600);
   //Serial.println("Instructions for the Robot: Enter value from 1000 to 2000");
+
+  //attach interrupt
+  attachInterrupt(0, wake, LOW);
 }
 
+void sleep() {
+  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+  attachInterrupt(0, wake, LOW);
+  sleep_mode();
+}
 
 void loop() {
   /*
@@ -83,6 +116,13 @@ void loop() {
     //Empty the command line for the next input
     readInstructions = "";
     */
+
+  //switch the robot on and off  
+  if (buttonPushed == 1) {
+    sleep();
+  } else {
+    attachInterrupt(0, toggle, LOW);
+  }
 
   dtr();
     
@@ -125,6 +165,9 @@ void dtr() {
   } else {
     Drive(direct * 50/165, 0, 10);
   }
+
+  //set LED color
+  setColor(255, 0, 0);
 }
 
 //Drives towards the closest green block
@@ -164,6 +207,9 @@ void dtg() {
   } else {
     Drive(direct * 50/165, 0, 10);
   }
+
+  //set LED color
+  setColor(0, 255, 0);
 }
 
 //Drives towards the closest blue block
@@ -203,6 +249,9 @@ void dtb() {
   } else {
     Drive(direct * 50/165, 0, 10);
   }
+
+  //set LED color
+  setColor(0, 0, 255);
 }
 
 //Drives towards the closest yellow block
@@ -242,6 +291,9 @@ void dty() {
   } else {
     Drive(direct * 50/165, 0, 10);
   }
+
+  //set LED color
+  setColor(255, 255, 0);
 }
 
 void Drive(float ls, float rs, float d) {
@@ -292,5 +344,24 @@ int readQR(){
     return diff;
   }
 }
+
+//enter color satuations to display different colors
+//red = 255, 0 , 0
+//green = 0, 255, 0
+//blue = 0, 0, 255
+//yellow = 255, 255, 0
+void setColor(int red, int green, int blue)
+{
+  #ifdef COMMON_ANODE
+    red = 255 - red;
+    green = 255 - green;
+    blue = 255 - blue;
+  #endif
+  analogWrite(LEDR, red);
+  analogWrite(LEDG, green);
+  analogWrite(LEDB, blue);  
+}
+
+
 
 
