@@ -44,7 +44,13 @@ I also wish to find a more suitable way to attach the sensors and actuators to t
 
 
 ### Entry by Wenxuan:
+I first coded the line sensor used the code provided online, but we found that using micros() function was not working so we switched to using counter. We started counting when the digitalRead reported HIGH and counted up continuously every 20 millisecond using delay(20). If the counter was higher than 15 (an arbitrary number that needed to be fine-tuned to set the threshold), we know the object had low reflectance, and vice versa (Light objects absorb less IR signals and high reflectance back to the phototransistor would cause the output to go lower).
 
+However, we found that digital reading of the line-detecting sensor didn't work in general, using digitalRead(), and the sensor failed to report "LOW" when a white/light object appear . Therefore we switched the sensor to analog mode and the sensor reported the value of the output. Unfortunately, the difference of the analog values when the line sensor senses dark and light objects was very low (approximately 1010 for grey/black objects, and only changed to around 960 if the white tape was around 3~4cm near the sensor). Therefore we decided to map the values to make the differene higher. 
+
+Another problem arose when we found that the line-detecting sensor did not differentiate bewteen blue and white tape (when it was near the blue tape, it also reported a low value). Therefore, I came up with the idea that we used the combination between the camera and the line-detecting sensor. Although the camera cannot tell whether the object is white, it can tell colored objects. So if line-detecting sensor reports a low value while the camera does not report it's a colored object, it means the robot has reached the border.
+
+I also learned how to solder because the other two group members had some traumatic soldering experience. I need to remember to put on safety glasses and open the ventilation next time.
 
 ## Division of Labor
 **Steven Park**
@@ -53,6 +59,7 @@ I also wish to find a more suitable way to attach the sensors and actuators to t
 
 **Wenxuan Guo**
 - Worked on the Arduino code for the line-detecting sensor
+- Soldered the line-detecting sensor
 
 **Shihan Zhao**
 - Worked on the Pixy camera
