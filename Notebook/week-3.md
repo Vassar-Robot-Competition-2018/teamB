@@ -36,6 +36,9 @@ At the moment, finishing the milestones is our top priority, so our prototype en
 
 
 ### Entry by Shihan:
+It has been a frustrating week for me...not much solid progress had been made this week. I mainly worked on three tasks -- adding a RGB LED, adding a switch that turns the robot on and off, and expermenting with color codes. I eventually got the LED to work, but only after two hours of debugging and not without help. Switch was a hard one, because I was trying to implement it by putting Arduino to sleep mode with codes, which involves all sorts of complications such as attaching/detaching interrupt, pin, circuit connection. In the end I built the switch circuit and codes that could turn Arduino off -- temporarily (because it doesn't stay off). Before I could solve this Steven found a physical switch soldered to the battery cord that simply cut the power, which we immediately turned to for its reliability. With some help, I also figured out the inner workings of color code, so now our camera can distinguish between color boundaries and blocks.
+
+Perhaps I need to seriously consider the viability of a component before I get to it. I've been spending too much time on parts that might not eventually be used on our robot. (My fellow teammates, if you are seeing this, I sincerely apologize for my stubborness...)
 
 
 ### Entry by Wenxuan:
