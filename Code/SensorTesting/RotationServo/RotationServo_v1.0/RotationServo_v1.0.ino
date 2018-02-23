@@ -1,7 +1,7 @@
 //Web Page
 //https://www.zipwhip.com/blog/manual-control-of-a-servo-on-the-arduino-for-the-zipwhip-textspresso-machine/
 
-int ROTATION_PIN = 3;
+int ROTATION_PIN = 5;
 
 int lenPeriod = 20 * 1000;
 int lenPulse = 0;
@@ -32,21 +32,22 @@ void loop() {
 */
 
 void loop () {
-  readInstructions = Serial.readString();
-  Serial.println(readInstructions);
-  lenPulseStart = readInstructions.toInt();
-  lenPulse += lenPulseStep;
+  while(Serial.available()){
+    readInstructions = Serial.readString();
+    Serial.println(readInstructions);
+    lenPulseStart = readInstructions.toInt();
+    lenPulse += lenPulseStep;
+    
+    while (lenPulse = lenPulseStart) {
+      digitalWrite(ROTATION_PIN, HIGH);
+      delayMicroseconds(lenPulseEnd - lenPulseStart);
+      digitalWrite(ROTATION_PIN, LOW);
+      delayMicroseconds(lenPeriod - lenPulseEnd);
+    }
   
-  while (lenPulse = lenPulseStart) {
-    digitalWrite(ROTATION_PIN, HIGH);
-    delayMicroseconds(lenPulseEnd - lenPulseStart);
-    digitalWrite(ROTATION_PIN, LOW);
-    delayMicroseconds(lenPeriod - lenPulseEnd);
+    lenPulseStep = lenPulseStep * -1;
+    lenPulse += lenPulseStep;
+    
+    delay(2 * 1000);
   }
-
-  lenPulseStep = lenPulseStep * -1;
-  lenPulse += lenPulseStep;
-  
-  delay(2 * 1000);
-  readInstructions = "";
 }
