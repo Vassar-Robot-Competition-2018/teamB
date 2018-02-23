@@ -6,7 +6,5 @@ Group Members:
 - Shihan Zhao
 
 To Do:
-- Connect the code for the IR to the main code. 
-- Code for toggle switch
-- 3D model
-- Maybe add more IR sensors
+- Get the line-detecting sensor to work
+- Get the servos to move properly
