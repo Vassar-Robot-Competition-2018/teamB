@@ -42,7 +42,11 @@ Perhaps I need to seriously consider the viability of a component before I get t
 
 
 ### Entry by Wenxuan:
+I was working on the code for a servo that can only turn 180 degrees back and forth. The problem was that the code can specify how many degrees the servo would turn forward but I didn't know how the servo could be able to turn backward. There was no example code online.
 
+I also worked on the RGB sensor and the primitive values to detect red, blue and green shows that the sensor was fast and sensitive, however now I'm trying to write the functions to set the boundaries for what is red, blue or green.
+
+I soldered all the components but also did some other hardware stuff like crimping the connection wires (the wires on some of our sensors are too short).
 
 ## Division of Labor
 **Steven Park**
@@ -54,6 +58,7 @@ Perhaps I need to seriously consider the viability of a component before I get t
 **Wenxuan Guo**
 - Sautered all the necessary materials (the other line-detecting sensor & the RGB camera)
 - Worked on the Arduino code for the servo that will act as a camera stand
+- Worked on the RGB sensor
 - Helped complete the robot body
 
 **Shihan Zhao**
