@@ -25,11 +25,11 @@ He may have also worked on the Arduino code for the IR sensor as well. Neverthel
 On Saturday, we met together to work on the robot for several hours (we have done this every Saturday since the semester started). The first thing I did was build the parts of the robot that would not only hold the IR and RGB sensors but also the "arms" that would allow the robot to push the blocks. 
 While I was initially worried that I would not find the Lego/Bionicle parts I needed, I was surprised to find all the parts with relative ease. After spending some time constructing the parts, we're starting to see the robot finally take shape. 
 
-![Robot Front](\Photos_and_Videos\Front.jpg)
-![Robot Left](\Photos_and_Videos\Left.jpg)
-![Robot Right](\Photos_and_Videos\Right.jpg)
-![Robot Back](\Photos_and_Videos\Back.jpg)
-![Robot Top](\Photos_and_Videos\Top.jpg)
+![Robot Front](/teamB/Photos_and_Videos/Front.jpg)
+![Robot Left](/teamB/Photos_and_Videos/Left.jpg)
+![Robot Right](/teamB/Photos_and_Videos/Right.jpg)
+![Robot Back](/teamB/Photos_and_Videos/Back.jpg)
+![Robot Top](/teamB/Photos_and_Videos/Top.jpg)
 
 I also found a way to attach the IR sensor to the robot without using any tape or glue of any kind, which is nice.
 With the modifications complete, I went ahead and calibrated the IR sensor by observing how the robot behaved, using the same code where the robot moves backwards only when it senses tape.
