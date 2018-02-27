@@ -48,7 +48,9 @@ With only two weeks left, we are starting to get pressed for time. We need to ma
 
 
 ### Entry by Wenxuan:
+We found that a lot of wires of the sensors weren't long enough to be connected to the arduino board while did their job, especially line sensors and RGB sensors which needed to be very close to the objects being detected, so I crimped the wires as connectors.
 
+I also worked on the RGB sensor code because this sensor can detect colors including white instead of hues, unlike the camera. The camera failed to detect white, grey or black. The sensor also included an IR filter to better identify the colors. I got the sensor to print out different values for red, green or blue and filter, but the values meant nothing so I had to define what means the object is red, green or blue. I tried to convert the values into 0 to 255, which is the default value for RGB model, but it didn't seem to work. Then Shihan used another method, but testing out the colors and just arbitrarily define the range for each color. The sensor was then connected to LEDs to signal colors. 
 
 
 ## Division of Labor
