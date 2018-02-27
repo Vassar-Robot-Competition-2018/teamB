@@ -24,9 +24,17 @@ Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS3472
 const int leftServoPin = 6;             //Pin #6
 const int rightServoPin = 7;            //Pin #7
 //const int QREPin;
+
+//LED pins for RGB sensor
 const int LEDR = A1;
 const int LEDG = A2;
 const int LEDB = A3;
+//LED pins for the camera
+const int LEDCR = A5;
+const int LEDCG = A6;
+const int LEDCB = A7;
+
+
 
 void setup() {
   /*
@@ -51,10 +59,16 @@ void setup() {
   //Set the initial LED configurations;
   setColor(0, 0, 0);
 
-  //set input and output pins
+  //set input and output pins for RGB sensor
   pinMode(LEDR, OUTPUT);
   pinMode(LEDG, OUTPUT);
   pinMode(LEDB, OUTPUT);
+  
+  //set input and output pins for the camera
+  pinMode(LEDCR, OUTPUT);
+  pinMode(LEDCG, OUTPUT);
+  pinMode(LEDCB, OUTPUT);
+  
 
   //Attach the servo objects to the servos on the respective pins
   LeftWheel.attach(leftServoPin);
@@ -194,7 +208,7 @@ void dtr() {
   }
 
   //set LED color
-  setColor(255, 0, 0);
+  setColorCam(255, 0, 0);
   Serial.print(direct);
 }
 
@@ -237,7 +251,7 @@ void dtg() {
   }
 
   //set LED color
-  setColor(0, 255, 0);
+  setColorCam(0, 255, 0);
 }
 
 //Drives towards the closest blue block
@@ -279,7 +293,7 @@ void dtb() {
   }
 
   //set LED color
-  setColor(0, 0, 255);
+  setColorCam(0, 0, 255);
 }
 
 //Drives towards the closest yellow block
@@ -321,7 +335,7 @@ void dty() {
   }
 
   //set LED color
-  setColor(255, 255, 0);
+  setColorCam(255, 255, 0);
 }
 
 void Drive(float ls, float rs, float d) {
@@ -375,11 +389,12 @@ void EscapeBack() {
   }
 */
 
-//enter color satuations to display different colors
+//enter color satuations to display different colors for RGB
 //red = 255, 0 , 0
 //green = 0, 255, 0
 //blue = 0, 0, 255
 //yellow = 255, 255, 0
+//white = 255, 255, 255
 void setColor(int red, int green, int blue)
 {
   red = 255 - red;
@@ -389,3 +404,48 @@ void setColor(int red, int green, int blue)
   analogWrite(LEDG, green);
   analogWrite(LEDB, blue);
 }
+
+//set the color for the camera
+void setColorCam(int red, int green, int blue)
+{
+  red = 255 - red;
+  green = 255 - green;
+  blue = 255 - blue;
+  analogWrite(LEDCR, red);
+  analogWrite(LEDCG, green);
+  analogWrite(LEDCB, blue);
+}
+
+int PREVIOUS =100;
+int STATE = 100;
+int NEXT =100;
+const int STATE_RED = 101;
+const int STATE_GREEN = 102;
+const int STATE_YELLOW = 103;
+const int STATE_BLUE = 104;
+
+int setState (int red, int green, int blue) {
+  red = 255 - red;
+  green = 255 - green;
+  blue = 255 - blue;
+  if (red == 0 && green == 0 && blue != 0) {
+    PREVIOUS = STATE;
+    return STATE = STATE_YELLOW;
+  } else if (red == 0) {
+    PREVIOUS = STATE;
+    STATE = STATE_RED;
+  } else if (green == 0) { 
+    PREVIOUS = STATE;
+    STATE = STATE_GREEN;
+  } else if (blue == 0) {
+    PREVIOUS = STATE;
+    return STATE = STATE_BLUE;
+  }
+}
+
+/*
+int Track () {
+  if (PREVIOUS == GREEN && STATE == RED)
+}
+*/
+
