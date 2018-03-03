@@ -45,7 +45,7 @@ With only two weeks left, we are starting to get pressed for time. We need to ma
 
 
 ### Entry by Shihan:
-
+I was focusing on milestone 3 this week, so most of my time was spent on readjusting the codes for driving towards the blocks. Turned out there were a lot of potential bugs with my initial version of the codes, like when the camera is not picking up any color blocks yet my codes still instructed Arduino to construct an array of color blocks, etc. I corrected all those (hopefully). For differentiating between color boundaries and color blocks, I initially planned to use color coding, but that turned out to be unreliable since the camera would often just pick up one of the colro codes as a normal color signature. So I turned to a simpler solution, which is to simply place the camera close enough to the ground that it no longer sees the color boundaries from a distance. (Color boundaries are flat, so if the camera is placed low, the surface area of color boundaries exposed to the camera would be so small that it wouldn't be picked up) This worked well for now, but I doubt if it would be a good solution for the later milestones. I also added an additional LED to display signals from the RGB sensor, which we use to detect color boundaries. I brought all these together, along with the parts my teammates built, and completed milestone3.
 
 ### Entry by Wenxuan:
 We found that a lot of wires of the sensors weren't long enough to be connected to the arduino board while did their job, especially line sensors and RGB sensors which needed to be very close to the objects being detected, so I crimped the wires as connectors.
