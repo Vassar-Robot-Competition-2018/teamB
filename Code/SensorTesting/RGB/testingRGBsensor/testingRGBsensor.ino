@@ -123,8 +123,7 @@ void loop() {
     }
   */
 
-  dtg();
-  //RGB();
+  RGB();
 
 }
 
@@ -133,6 +132,11 @@ void RGB() {
   uint16_t clear, red, green, blue;
 
   tcs.getRawData(&red, &green, &blue, &clear);
+  Serial.print("C:\t"); Serial.print(clear);
+  Serial.print("\tR:\t"); Serial.print(red);
+  Serial.print("\tG:\t"); Serial.print(green);
+  Serial.print("\tB:\t"); Serial.print(blue);
+  Serial.println();
 
   if (red > 6000 && green < 4000 && blue < 4000) {
     setColor(255, 0, 0);
@@ -416,32 +420,32 @@ void setColorCam(int red, int green, int blue)
   analogWrite(LEDCB, blue);
 }
 
-int PREVIOUS =100;
-int STATE = 100;
-int NEXT =100;
-const int STATE_RED = 101;
-const int STATE_GREEN = 102;
-const int STATE_YELLOW = 103;
-const int STATE_BLUE = 104;
-
-int setState (int red, int green, int blue) {
-  red = 255 - red;
-  green = 255 - green;
-  blue = 255 - blue;
-  if (red == 0 && green == 0 && blue != 0) {
-    PREVIOUS = STATE;
-    return STATE = STATE_YELLOW;
-  } else if (red == 0) {
-    PREVIOUS = STATE;
-    STATE = STATE_RED;
-  } else if (green == 0) { 
-    PREVIOUS = STATE;
-    STATE = STATE_GREEN;
-  } else if (blue == 0) {
-    PREVIOUS = STATE;
-    return STATE = STATE_BLUE;
-  }
-}
+//int PREVIOUS =100;
+//int STATE = 100;
+//int NEXT =100;
+//const int STATE_RED = 101;
+//const int STATE_GREEN = 102;
+//const int STATE_YELLOW = 103;
+//const int STATE_BLUE = 104;
+//
+//int setState (int red, int green, int blue) {
+//  red = 255 - red;
+//  green = 255 - green;
+//  blue = 255 - blue;
+//  if (red == 0 && green == 0 && blue != 0) {
+//    PREVIOUS = STATE;
+//    return STATE = STATE_YELLOW;
+//  } else if (red == 0) {
+//    PREVIOUS = STATE;
+//    STATE = STATE_RED;
+//  } else if (green == 0) { 
+//    PREVIOUS = STATE;
+//    STATE = STATE_GREEN;
+//  } else if (blue == 0) {
+//    PREVIOUS = STATE;
+//    return STATE = STATE_BLUE;
+//  }
+//}
 
 /*
 int Track () {
