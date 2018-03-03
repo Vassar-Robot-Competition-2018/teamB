@@ -114,7 +114,9 @@ void loop() {
     //Empty the command line for the next input
     readInstructions = "";
     */
-    Drive(30,30,1);
+
+   
+    //Drive(50,50,1);
     RGB();
     
 }
@@ -413,23 +415,32 @@ int readQR(){
 
 void RGB() {
   int counter = 0;
+  
+  //if(counter > 2){
+    
+  //}
+  //else{
+    
+  //}
   while (counter < 2) {
     uint16_t clear, red, green, blue;
     tcs.getRawData(&red, &green, &blue, &clear);
-      
+
+    Drive(10,10,1);
+    
 //    Serial.print("C:\t"); Serial.print(clear);
 //    Serial.print("\tR:\t"); Serial.print(red);
 //    Serial.print("\tG:\t"); Serial.print(green);
 //    Serial.print("\tB:\t"); Serial.print(blue);
     //Serial.print("\tState:\t"); Serial.print(STATE);
-    Serial.print("\tCounter:\t"); Serial.print(counter);
-    Serial.println();
-    delay(60);
+    //Serial.print("\tCounter:\t"); Serial.print(counter);
+    //Serial.println();
+    //delay(60);
     if (red > 1500 && green < 1500 && blue < 1500) {
       setState(255, 0, 0);
       setColor2(STATE_RED);
       counter++;
-    } else if (green > 4000 && red < 4000 && blue < 3000) {
+    } else if (green > 3000 && red < 3000 && blue < 3000) {
       setState(0, 255, 0);
       setColor2(STATE_GREEN);
       counter++;
@@ -437,7 +448,7 @@ void RGB() {
       setState(0, 0, 255);
       setColor2(STATE_BLUE);
       counter++;
-    } else if (red > 4000 && green > 3500 && blue < 3000) {
+    } else if (red > 3000 && green > 2000 && blue < 3000) {
       setState(255, 255, 0);
       setColor2(STATE_YELLOW);
       counter++;
@@ -450,8 +461,8 @@ void RGB() {
   }
 
   while (counter >= 2) {
-    Serial.print("\tCounter:\t"); Serial.print(counter);
-    Serial.println();
+    //Serial.print("\tCounter:\t"); Serial.print(counter);
+    //Serial.println();
     Drive(-30, -30, 50);
     STATE = PREVIOUS;
     setColor2(STATE);
