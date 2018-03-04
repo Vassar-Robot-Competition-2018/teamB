@@ -1,4 +1,6 @@
-# Team B (Name Pending)
+# Team Renegades
+
+Team Theme: (https://www.youtube.com/watch?v=8j741TUIET0)
 
 Group Members:
 - Steven Park
@@ -6,5 +8,5 @@ Group Members:
 - Shihan Zhao
 
 To Do:
-- Get the line-detecting sensor to work
-- Get the servos to move properly
+- Work on Milestone 4
+- Work on Milestone 6
