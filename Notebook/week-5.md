@@ -5,6 +5,7 @@
 ### Entry by Steven Park:
 
 We finally have our Team Name: **Team Renegades**
+
 The name was mostly inspired by the fact that the final design of our robot looks oddly like a Jeep SUV. But I also suggested it because I really like the X Ambassador song.
 
 [Team Theme: Renegades by X Ambassadors] (https://www.youtube.com/watch?v=8j741TUIET0)
