@@ -67,13 +67,9 @@ void RGB() {
 I mostly spent the week remodeling the robot and building all its necessary appendages. 
 
 ![Robot Front](/Photos_and_Videos/Week5/Front.JPG)
-
 ![Robot Left](/Photos_and_Videos/Week5/Left.JPG)
-
 ![Robot Right](/Photos_and_Videos/Week5/Right.JPG)
-
 ![Robot Back](/Photos_and_Videos/Week5/Back.JPG)
-
 ![Robot Top](/Photos_and_Videos/Week5/Top.JPG)
 
 Using both Legos and Bionicles, I built a front appendage that not only held both the RGB sensor and the camera firmly in place but also had "arms" that funnelled any block in front of it to the front of the robot.
