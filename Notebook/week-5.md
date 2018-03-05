@@ -103,7 +103,11 @@ But we still have to handle this vehicle prototype with care.
 
 
 ### Entry by Wenxuan:
+Milestone 5 was easier than milestone 4 and 6 so we decided to finish this one first. Since RGB only worked when it was sufficiently close to the objects, we put the RGB very close to the ground. The sensor was fast enought to identify the color boundaries adjacent to each other, so I decided to include two state, PREVIOUS and STATE, to track the color of previous quadrant and current quadrant. When the robot crossed the broundary, it will record PREVIOUS and STATE. In order to signal the state it was in required by milestone 5, as soon as the robot crossed the boundary (by using a counter, when it reached 2, it meant the robot just crosse a boundary consisting of two colors), it would back up and change the state back to PREVIOUS and signal the color of the quadrant using LED. 
 
+I modified some functions in the RGB-sensortesting file, because after adding setState, the setColor2 passing three parameters is very redundant and inefficient to use. Therefore, I modified setColor2 to pass only one parameter, the STATE that the robot was in. 
+
+I ran into trouble when I put the drive(30,30,1) and RGB() functions in the loop because it seemed that the loop was not executing the RGB function when the robot was driving. So Steven moved the drive() function inside the RGB() method and it workd. 
 
 ## Division of Labor
 **Steven Park**
@@ -112,6 +116,7 @@ But we still have to handle this vehicle prototype with care.
 
 **Wenxuan Guo**
 - Wrote and finished the Arduino code for Milestone 5
+- Modified the RGB sensor code (added setState and modified setColor2)
 
 **Shihan Zhao**
 - Wrote and finished the Arduino code for Milestone 3
