@@ -123,7 +123,7 @@ void loop() {
     }
   */
 
-  RGB();
+  setColor(255,0,0);
 
 }
 
@@ -138,15 +138,21 @@ void RGB() {
   Serial.print("\tB:\t"); Serial.print(blue);
   Serial.println();
 
-  if (red > 6000 && green < 4000 && blue < 4000) {
+  //red = 255, 0 , 0
+//green = 0, 255, 0
+//blue = 0, 0, 255
+//yellow = 255, 255, 0
+//white = 255, 255, 255
+  //red
+  if (red > 2000 && green < 1500 && blue < 1500) {
     setColor(255, 0, 0);
-  } else if (green > 10000 && red < 10000 && blue < 10000) {
+  } else if (green > 4000 && red < 4000 && blue < 3000) { //green
     setColor(0, 255, 0);
-  } else if (blue > 10000 && red < 5000) {
+  } else if (blue > 4000 && red < 2000 && green < 4700) { //blue
     setColor(0, 0, 255);
-  } else if (red > 10000 && green > 10000 && blue < 10000) {
+  } else if (red > 4000 && green < 6000 && blue < 3000) {  //yellow
     setColor(255, 255, 0);
-  } else if (red > 10000 && green > 10000 && blue > 10000) {
+  } else if (red > 5000 && green > 5000 && blue > 5000) {  //white
     setColor(255, 255, 255);
   } else {
     setColor(0, 0, 0);
