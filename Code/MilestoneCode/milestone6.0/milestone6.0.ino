@@ -28,7 +28,7 @@ int current = 0;
 
 //sensors & servos & LED & switch pins
 //NOTE: DO NOT USE pin 0 or pin 1
-const int leftServoPin = 6;             //Pin #6
+const int leftServoPin = 5;             //Pin #6
 const int rightServoPin = 7;            //Pin #7
 //const int QREPin;
 const int LEDR = A7;
@@ -139,8 +139,9 @@ void loop() {
     }*/
 
 
-  RGB();
-  disp();
+Drive(30, 30, 1);
+  //RGB();
+  //disp();
 
 }
 
