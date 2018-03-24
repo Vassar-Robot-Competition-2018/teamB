@@ -56,6 +56,14 @@ Here is the result of this final redesign:
 While we still have to test to make sure the camera is positioned properly, I have hopes that this new design will make it easier to achieve milestone 4.
 In addition, Phil let me know that it would be advisable for us to redo the soldering on the RGB sensor, which I'll leave to Wenxuan who is the only one in our group who is good at that kind of task.
 
+In the later half of Spring Break, I met with Shihan twice to try and accomplish milestone 4 before classes started again. 
+While Shihan managed to finish the code, we had a few problems with the camera detecting both the tape and the blocks when it should only be detecting the blocks.
+We tried several solutions such as covering the bottom half of the lens of the camera, but this did little to help. 
+We also noticed that the robot was dragging at times and having difficulty moving. There were two main reasons for this.
+First, the ball bearing at the back of the robot was lifting the robot slightly higher up than it was supposed to, giving the wheels less friction than normal. After some consideration, we ended up removing the ball bearing entirely since given the robot's current design, it could balance itself just fine.
+Second, the servos we attached with tape and held down with legos were starting to come loose. This goes to show the urgency of printing a 3D model base. At the moment, we managed to temporarily solve the problem, but we need to find a way to attach the servos firmly to the robot.
+Ideally, we should spend the second 6 weeks on our 3D model, but a good alternative is to cut a large square hole in the foam base of the robot and hold the servos down on the base using clamps.
+For right now, we still managed to get milestone 4 accomplished by the second day. 
 
 
 ### Entry by Shihan:
@@ -72,6 +80,7 @@ In addition, Phil let me know that it would be advisable for us to redo the sold
 - Met with Phil to work on crimping, circuitry, and miscellaneous building techniques (Spring Break)
 - Redesigned the front of the robot to position the RGB sensor behind the camera (Spring Break)
 - Crimped extra wires to extend the camera cables (Spring Break)
+- Made modifications to the robot body to accomplish milestone 4 (Spring Break)
 
 **Wenxuan Guo**
 - Worked on Arduino code for Milestone 6
@@ -84,3 +93,5 @@ In addition, Phil let me know that it would be advisable for us to redo the sold
 - Worked on Arduino code for Milestone 4
 - Recalibrated the RGB sensor multiple times
 - Worked with the camera
+- Finished the Arduino code for Milestone 4 (Spring Break)
+- Recalibrated the camera and RGB sensors (Spring Break)
