@@ -70,7 +70,21 @@ For right now, we still managed to get milestone 4 accomplished by the second da
 
 
 ### Entry by Wenxuan:
+We worked on Milestone 4 and 6 during the last day before the break. Milestone 6 was relatively easier to achieve, so we focused on milestone 6 first. I was still obsessed with implementing some ideas of internal map and tracking PREVIOUS state and CURRENT state using a counter. However, there was a big problem of my code. 
+Previously, I added counter by one if it detects a color, but the robot was constantly detecting colors and the counter would increase by 1 even if the robot was detecting the same color. Therefore, I added a statement if (STATE != PREVIOUS). Unfortunately, the code was still not working very well so we gave up the internal map idea, which was not necessary for this milestone, though I was thinking about future problems because we also planned to use a shaft encoder to do the internal map. 
 
+ if (red > 1100 && green < 700 && blue < 700) {
+      setState(255, 0, 0);
+      //setColor2(STATE_RED);
+      Serial.print("\tCounter:\t"); Serial.print(counter);
+      if (STATE != PREVIOUS) counter++;
+    }
+
+Therefore we switched to the most simple behavior-based code, and the robot just reacted to the color of the tape by exhibiting LED light, without recording the PREVIOUS or CURRENT state. The code worked but we found that random walking might not make the robot accomplish the milestone within 2 minutes, so we switched to hard-code the robot to turn 90 degrees every time it saw a white tape, so it would circle around the four quadrants. 
+
+We spent too much time redoing the hardware of the robot so we hardly had any time testing the code for milestone 4. It was frustrating to see that our robot was not even doing the most basic behaviors like driving, so we gave up on milestone 4 before midnight.
+
+I did not work on the robot during the break because I was out of town. 
 
 ## Division of Labor
 **Steven Park**
