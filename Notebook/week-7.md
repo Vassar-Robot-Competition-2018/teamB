@@ -55,9 +55,9 @@ Then I started to use Openscad to construct 3D model to be printed. This task wa
 
 Then I consulted with Nick, and he still suggested me creating a Variable List. Also, he said that it would be ideal to be as accurate as possible and there would a way to deal with holes that are too small, but we could do nothing about big holes. Moreover, he also gave some suggestions on my design, such as whether print some component to be one part or several parts. As a result, I'm designing a model again, creating a big variable list. I also measured the components again and did some sketch on the overall design
 
-![Sketch_1_modified](/Photos_and_Videos/Week7/Sketch_1_modified.jpg)
+![Sketch_1_modified](/Photos_and_Videos/Week7/Sketch_1_modified.JPG)
 
-![Sketch_2](/Photos_and_Videos/Week7/Sketch_2.jpg)
+![Sketch_2](/Photos_and_Videos/Week7/Sketch_2.JPG)
 
 ## Division of Labor
 **Steven Park**
