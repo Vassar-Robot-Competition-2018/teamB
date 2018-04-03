@@ -23,17 +23,37 @@ Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS3472
 //This is used for testing
 String readInstructions;
 
-//sensors & servos & LED & switch pins
+//Saves the current color RGB sees
+int current = 0;
+
+//am I holding a block???
+int hold = 0;
+
+//which quadrant did i start in???
+int qua = 0;
+
+//servos
 //NOTE: DO NOT USE pin 0 or pin 1
-const int leftServoPin = 6;             //Pin #6
-const int rightServoPin = 7;            //Pin #7
-//const int QREPin;
+const int leftServoPin = 5;             
+const int rightServoPin = 7;            
+
+//LEDs
 const int LEDR = A7;
 const int LEDG = A6;
 const int LEDB = A5;
 const int LEDR2 = A4;
 const int LEDG2 = A3;
 const int LEDB2 = A2;
+
+//shaft encoders
+const int encoderPin1 = 2;
+const int encoderPin2 = 3;
+
+//internal map variables
+const double one = 9.81747704246;
+unsigned int timer = 0;
+unsigned long ticks1 = 0;
+unsigned long ticks2 = 0;
 
 void setup() {
   /*
@@ -44,7 +64,7 @@ void setup() {
      Right now, the code can only move forwards.
      By the way, auto-indent is Ctrl-t.
   */
-  
+
   //initialize camera
   camera.init();
 
@@ -66,33 +86,37 @@ void setup() {
   pinMode(LEDR2, OUTPUT);
   pinMode(LEDG2, OUTPUT);
   pinMode(LEDB2, OUTPUT);
+  pinMode(encoderPin1, INPUT_PULLUP);
+  pinMode(encoderPin2, INPUT_PULLUP);
 
   //Attach the servo objects to the servos on the respective pins
   LeftWheel.attach(leftServoPin);
   RightWheel.attach(rightServoPin);
-  
+
   //Setting the Serial Monitor:
   //The Serial Monitor will be used to give commands to the robot and keep track of those commands.
   Serial.begin(9600);
   //Serial.println("Instructions for the Robot: Enter value from 1000 to 2000");
+
+  attachInterrupt(digitalPinToInterrupt(encoderPin1), countTicks1, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(encoderPin2), countTicks2, CHANGE);
+  
 }
 
 void loop() {
   /*
-  //Sets up the Serial Monitor
-  while(Serial.available()){
+    //Sets up the Serial Monitor
+    while(Serial.available()){
     char c = Serial.read();
     readInstructions += c;
-    delay(2);  
-  }
-
-  //
-  if(readInstructions.length() > 0){
+    delay(2);
+    }
+    //
+    if(readInstructions.length() > 0){
     //Read the captured String
     Serial.println(readInstructions);
     //Convert from String to int
     int x = readInstructions.toInt();
-
     //If given proper input for servo microseconds
     if((x >= 1000) && (x <= 2000)){
       Serial.print("Servo Microseconds:");
@@ -100,25 +124,75 @@ void loop() {
       LeftWheel.writeMicroseconds(x);
       RightWheel.writeMicroseconds((2000 - x) + 1000);
     }
-
     //If given input outside of range
     else{
-      Serial.print("Please type in a value that fits within the range of 1000 to 2000"); 
+      Serial.print("Please type in a value that fits within the range of 1000 to 2000");
     }
-  }
-
+    }
     //Empty the command line for the next input
     readInstructions = "";
-    */
+  */
 
-    RGB();
-    dtg();
-    
+  /*
+    while(start = 0) {
+    Drive(50, 50, 1);
+    uint16_t clear, red, green, blue;
+    tcs.getRawData(&red, &green, &blue, &clear);
+    if (red > 1500 && green < 1500 && blue < 1500) {
+      setColor2(255, 0, 0);
+      start = 1;
+    } else if (green > 4000 && red < 4000 && blue < 3000) {
+      setColor2(0, 255, 0);
+      start = 2;
+    } else if (blue > 3000 && red < 2000 && green < 4500) {
+      setColor2(0, 0, 255);
+      start = 3;
+    } else if (red > 4000 && green > 3500 && blue < 3000) {
+      setColor2(255, 255, 0);
+      start = 4;
+    } else if (red > 4000 && green > 4500 && blue > 4000) {
+      setColor2(255, 255, 255);
+      EscapeBack();
+    }
+    Serial.println("Meh");
+    }*/
+
+  RGB();
+  disp();
+  dt(qua);
+  
+}
+
+void countTicks1() {
+  ticks1++;
+}
+
+void countTicks2() {
+  ticks2++;
+}
+
+void randDrive() {
+  int randi = random(0, 50);
+  Drive(randi, -randi, 1000);
+}
+
+void disp() {
+  if (current == 1) {
+    setColor2(255, 0, 0);
+  } else if (current == 2) {
+    setColor2(0, 255, 0);
+  } else if (current == 3) {
+    setColor2(0, 0, 255);
+  } else if (current == 4) {
+    setColor2(255, 255, 0);
+  } else {
+    setColor2(0, 0, 0);
+  }
 }
 
 void RGB() {
   uint16_t clear, red, green, blue;
-  
+
   tcs.getRawData(&red, &green, &blue, &clear);
 
   /*
@@ -126,24 +200,159 @@ void RGB() {
   Serial.print("\tR:\t"); Serial.print(red);
   Serial.print("\tG:\t"); Serial.print(green);
   Serial.print("\tB:\t"); Serial.print(blue);
+  Serial.print("\tS:\t"); Serial.print(current);
 
   Serial.println();
   */
 
-  if (red > 6000 && green < 4000 && blue < 4000) {
-    setColor2(255, 0, 0);
-  } else if (green > 10000 && red < 10000 && blue < 10000) {
-    setColor2(0, 255, 0);
-  } else if (blue > 10000 && red < 5000) {
-    setColor2(0, 0, 255);
-  } else if (red > 10000 && green > 10000 && blue < 10000) {
-    setColor2(255, 255, 0);
-  } else if (red > 10000 && green > 10000 && blue > 10000) {
-    setColor2(255, 255, 255);
+  if (red > 600 && green < 400 && blue < 400) {
+    //setColor2(255, 0, 0);
+    current = 1;
+    if (qua == 0) {
+      qua = 1;
+    }
+    //randDrive();
+  } else if (green > 1000 && red < 1000 && blue < 700) {
+    //setColor2(0, 255, 0);
+    current = 2;
+    if (qua == 0) {
+      qua = 2;
+    }
+    //randDrive();
+  } else if (blue > 1000 && red < 1000 && green < 2100) {
+    //setColor2(0, 0, 255);
+    current = 3;
+    if (qua == 0) {
+      qua = 3;
+    }
+    //randDrive();
+  } else if (red > 1000 && green < 2500 && blue < 800) {
+    //setColor2(255, 255, 0);
+    current = 4;
+    if (qua == 0) {
+      qua = 4;
+    }
+    //randDrive();
+  } else if (red > 1400 && green > 1400 && blue > 1300) {
     EscapeBack();
-  } else {
-    setColor2(0, 0, 0);
+  } //else {
+  //setColor2(0, 0, 0);
+  //}
+
+}
+
+//integrated drive-to
+//input: one of the ints 1, 2, 3, or 4, representing colors red, green, blue, and yellow respectively
+//output: drive towards the specified color
+void dt(int cl) {
+  
+  uint16_t blocks;
+  int targetIndex;
+  int targetX;
+  int direct;
+  float w;
+  float h;
+  float wh;
+  int siz;
+  //float www;
+
+  //fetch all color blocks for further processing
+  blocks = camera.getBlocks();
+
+  //the largest block will be the target
+  float sizes[blocks];
+
+  //use x-coordinate to guide
+  float x[blocks];
+
+  //float ww[blocks];
+
+  //initialize both sizes and x to be all zeroes
+  for (int i = 0; i < blocks; i++) {
+    sizes[i] = 0;
+    x[i] = 0;
+    //ww[i] = 0;
   }
+
+  if (blocks == 0 && hold == 0) {
+    randomDrive();
+    setColor(0, 0, 0);
+  } else if (hold == 1) {
+    Drive(30, 30, 1);
+  } else {
+    //get all blocks of the specified color
+    for (int i = 0; i < blocks; i++) {
+      w = (float)camera.blocks[i].width;
+      h = (float)camera.blocks[i].height;
+      siz = (camera.blocks[i].width * camera.blocks[i].height);
+      wh = w / h;
+      if ((camera.blocks[i].signature == cl) && (wh < 1.2) && (siz < 8000)) {
+        sizes[i] = siz;
+        x[i] = camera.blocks[i].x;
+        //ww[i] = wh;
+      }
+    }
+
+    targetIndex = getMax(sizes);
+    targetX = x[targetIndex];
+    direct = targetX - 159;
+    //www = ww[getMax(sizes)];
+
+    if (sizes[getMax(sizes)] >= 4000) {
+      hold = 1;
+    }
+
+    //x ranges between 0 and 319, so midpoint is 159
+    //store targetX-159 as reference for Drive()
+    if (targetX == 0) {
+      randomDrive();
+    } else if (direct < 0 && (abs(direct) > 10)) {
+      Drive((-direct * 50 / 159), 0, 10);
+    } else if (direct > 0 && (abs(direct) > 10)) {
+      Drive(0, direct * 50 / 159, 10);
+    } else {
+      Drive(30, 30, 10);
+    }
+    
+    //set LED color
+    switch (cl) {
+      case 0:
+        setColor(0, 0, 0);
+        break;
+      case 1: 
+        setColor(255, 0, 0);
+        break;
+      case 2:
+        setColor(0, 255, 0);
+        break;
+      case 3:
+        setColor(0, 0, 255);
+        break;
+      case 4:
+        setColor(0, 255, 255);
+        break;
+    }
+  }
+    /*
+    Serial.print("Direct:\t");
+    Serial.print(direct);
+    Serial.print("\t\t");
+    Serial.print("targetX:\t");
+    Serial.print(targetX);
+    Serial.print("\t\t");
+    Serial.print("Area:\t");
+    Serial.print(sizes[targetIndex]);
+    Serial.print("\t\t");
+    Serial.print("blocks\t:");
+    Serial.print(blocks);
+    Serial.print("\t\t");
+    Serial.print("hold\t:");
+    Serial.print(hold);
+    Serial.print("\t\t");
+    Serial.print("www\t:");
+    Serial.print(www);
+    Serial.println();
+    */    
 }
 
 //Drives towards the closest red block
@@ -153,7 +362,7 @@ void dtr() {
   int targetIndex;
   float targetX;
   float direct;
-  
+
   //fetch all color blocks for further processing
   blocks = camera.getBlocks();
 
@@ -188,16 +397,16 @@ void dtr() {
     //x ranges between 0 and 319, so midpoint is 159
     //store targetX-159 as reference for Drive()
     if (direct > 0 && (abs(direct) > 10)) {
-      Drive(0, direct * 50/159, 1);
+      Drive(0, direct * 50 / 159, 1);
     } else if (direct < 0 && (abs(direct) > 10)) {
-      Drive((-direct * 50/159), 0, 1);
+      Drive((-direct * 50 / 159), 0, 1);
     } else {
       Drive(30, 30, 1);
     }
     //set LED color
-    setColor(255, 0, 0); 
+    setColor(255, 0, 0);
   }
-  
+
 }
 
 //Drives towards the closest green block
@@ -207,7 +416,7 @@ void dtg() {
   int targetIndex;
   float targetX;
   float direct;
-  
+
   //fetch all color blocks for further processing
   blocks = camera.getBlocks();
 
@@ -217,9 +426,11 @@ void dtg() {
   //use x-coordinate to guide
   float x[blocks];
 
-  if (blocks == 0) {
+  if (blocks == 0 && hold == 0) {
     randomDrive();
     setColor(0, 0, 0);
+  } else if (hold == 1) {
+    Drive(30, 30, 1);
   } else {
     //initialize both sizes and x to be all zeroes
     for (int i = 0; i < blocks; i++) {
@@ -235,39 +446,47 @@ void dtg() {
       }
     }
 
+    
+
     targetIndex = getMax(sizes);
     targetX = x[targetIndex];
     direct = targetX - 159;
 
     if (sizes[getMax(sizes)] >= 10000) {
-      Drive(0, 0, 1000);
+      hold = 1;
     }
 
     //x ranges between 0 and 319, so midpoint is 159
     //store targetX-159 as reference for Drive()
-    if (direct > 0 && (abs(direct) > 10)) {
-      Drive(0, direct * 50/159, 1);
-    } else if (direct < 0 && (abs(direct) > 10)) {
-      Drive((-direct * 50/159), 0, 1);
+    if (direct < 0 && (abs(direct) > 10)) {
+      Drive((-direct * 50 / 159), 0, 1);
+    } else if (direct > 0 && (abs(direct) > 10)) {
+      Drive(0, direct * 50 / 159, 1);
     } else {
       Drive(30, 30, 1);
     }
+
     //set LED color
-    setColor(0, 255, 0); 
+    setColor(0, 255, 0);
+
   }
-  
-  Serial.print("Direct:\t");
-  Serial.print(direct);
-  Serial.print("\t\t");
-  Serial.print("targetX:\t");
-  Serial.print(targetX);
-  Serial.print("\t\t");
-  Serial.print("Area:\t");
-  Serial.print(sizes[targetIndex]);
-  Serial.print("\t\t");
-  Serial.print("blocks\t:");
-  Serial.print(blocks);
-  Serial.println();
+    /*
+    Serial.print("Direct:\t");
+    Serial.print(direct);
+    Serial.print("\t\t");
+    Serial.print("targetX:\t");
+    Serial.print(targetX);
+    Serial.print("\t\t");
+    Serial.print("Area:\t");
+    Serial.print(sizes[targetIndex]);
+    Serial.print("\t\t");
+    Serial.print("blocks\t:");
+    Serial.print(blocks);
+    Serial.print("\t\t");
+    Serial.print("hold\t:");
+    Serial.print(hold);
+    Serial.println();
+    */
 }
 
 //Drives towards the closest blue block
@@ -277,7 +496,7 @@ void dtb() {
   int targetIndex;
   float targetX;
   float direct;
-  
+
   //fetch all color blocks for further processing
   blocks = camera.getBlocks();
 
@@ -312,16 +531,16 @@ void dtb() {
     //x ranges between 0 and 319, so midpoint is 159
     //store targetX-159 as reference for Drive()
     if (direct > 0 && (abs(direct) > 10)) {
-      Drive(0, direct * 50/159, 1);
+      Drive(0, direct * 50 / 159, 1);
     } else if (direct < 0 && (abs(direct) > 10)) {
-      Drive((-direct * 50/159), 0, 1);
+      Drive((-direct * 50 / 159), 0, 1);
     } else {
       Drive(30, 30, 1);
     }
     //set LED color
-    setColor(0, 0, 255); 
+    setColor(0, 0, 255);
   }
-  
+
 }
 
 
@@ -332,7 +551,7 @@ void dty() {
   int targetIndex;
   float targetX;
   float direct;
-  
+
   //fetch all color blocks for further processing
   blocks = camera.getBlocks();
 
@@ -367,28 +586,28 @@ void dty() {
     //x ranges between 0 and 319, so midpoint is 159
     //store targetX-159 as reference for Drive()
     if (direct > 0 && (abs(direct) > 10)) {
-      Drive(0, direct * 50/159, 1);
+      Drive(0, direct * 50 / 159, 1);
     } else if (direct < 0 && (abs(direct) > 10)) {
-      Drive((-direct * 50/159), 0, 1);
+      Drive((-direct * 50 / 159), 0, 1);
     } else {
       Drive(30, 30, 1);
     }
     //set LED color
-    setColor(0, 255, 255); 
+    setColor(0, 255, 255);
   }
-  
+
 }
 
 void Drive(float ls, float rs, float d) {
   /*
-   * -50 < ls & rs < 50
-   * d is in microseconds
-   */
-   ls = -ls;
-   rs = rs;
-   LeftWheel.writeMicroseconds(1500 + 10 * ls);
-   RightWheel.writeMicroseconds(1500 + 10 * rs);
-   delay(d);
+     -50 < ls & rs < 50
+     d is in microseconds
+  */
+  ls = -ls;
+  rs = rs;
+  LeftWheel.writeMicroseconds(1500 + 10 * ls);
+  RightWheel.writeMicroseconds(1500 + 10 * rs);
+  delay(d);
 }
 
 //helper function used to get the minimum index from a list
@@ -402,41 +621,40 @@ int getMax(float* array)
     if (array[i] > maximum) {
       maximum = array[i];
       maxIndex = i;
-      }
+    }
   }
   return maxIndex;
 }
 
 void randomDrive() {
-  Drive(random(0, 25), random(0, 25), 10);
+  Drive(random(0, 50), random(0, 50), 10);
 }
 
-void EscapeBack(){
-  Drive(-50, -50, 100);
+void EscapeBack() {
+  setColor2(255, 255, 255);
+  hold = 0;
+  Drive(-30, -30, 1000);
   //turn a random degree to avoid hitting into the edge again
-  int rand = random(0, 50);
-  Drive(rand, -rand, 100);
+  int rand = 25;
+  Drive(rand, -rand, 1000);
 }
 
 //detect Dark vs. Light objects
 //lower number (lower than 3000) means light objects
 /*
-int readQR(){
-  
+  int readQR(){
   pinMode( QREPin, OUTPUT );
   digitalWrite( QREPin, HIGH );
   delayMicroseconds(10);
   pinMode( QREPin, INPUT );
-  
   long TIME = micros();
-
   //time how long the input is HIGH, but quit after 3ms.
   while(digitalRead(QREPin) == HIGH && micros() - TIME < 3000) {
     int diff = micros() - TIME;
     printf("HIGH input lasts %d", diff);
     return diff;
   }
-}
+  }
 */
 
 //enter color satuations to display different colors
@@ -451,7 +669,7 @@ void setColor(int red, int green, int blue)
   blue = 255 - blue;
   analogWrite(LEDR, red);
   analogWrite(LEDG, green);
-  analogWrite(LEDB, blue);  
+  analogWrite(LEDB, blue);
 }
 
 //same as setColor, except it's used for the second LED
@@ -462,5 +680,6 @@ void setColor2(int red, int green, int blue)
   blue = 255 - blue;
   analogWrite(LEDR2, red);
   analogWrite(LEDG2, green);
-  analogWrite(LEDB2, blue);  
+  analogWrite(LEDB2, blue);
 }
+
