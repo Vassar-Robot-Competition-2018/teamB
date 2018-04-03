@@ -49,13 +49,13 @@ I re-soldered the RGB sensor because Phil said that the soldering filler materia
 
 Then I started to use Openscad to construct 3D model to be printed. This task was important and needed very meticulous measurement of each component. Although I found some datasheet about each component online, I still measured them myself. Initially I thought that if I need to make a hole, the hole's diameter needed to be slightly larger than the measurement, or the stuff going through the hole would be stuck. Therefore, I often made the hole a little bit bigger than the measurement. The modelling was very complicated in terms of the putting parameters or variables in. I did the sketch for each component but I didn't draw down the model but just constructed the model on Openscad. Because there were way too many measurements and variables, I didn't create any global variables, even if I realized that then it meant that only I could read my own code based on the sketch I had. Still it was a serious problem because it meant that it would be hard to change the design later. However, I used addition and subtraction to indicate each step I took, instead of using one number. Moreover, Steven gave me some examples of components when 3D printer would be hard to print. Therefore, I changed my design a little bit to be better printed. 
 
-![Sketch](/Photos_and_Videos/Week7/Sketch 1.jpg)
+![Sketch 1](/Photos_and_Videos/Week7/Sketch 1.jpg)
 ![3D_model](/Photos_and_Videos/Week7/Openscad_model.png)
 
 Then I consulted with Nick, and he still suggested me creating a Variable List. Also, he said that it would be ideal to be as accurate as possible and there would a way to deal with holes that are too small, but we could do nothing about big holes. Moreover, he also gave some suggestions on my design, such as whether print some component to be one part or several parts. As a result, I'm designing a model again, creating a big variable list. I also measured the components again and did some sketch on the overall design
 
-![Sketch](/Photos_and_Videos/Week7/Sketch 1 modified.jpg)
-![Sketch](/Photos_and_Videos/Week7/Sketch 2.jpg)
+![Sketch 1 modified](/Photos_and_Videos/Week7/Sketch 1 modified.jpg)
+![Sketch 2](/Photos_and_Videos/Week7/Sketch 2.jpg)
 
 ## Division of Labor
 **Steven Park**
