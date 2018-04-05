@@ -14,7 +14,7 @@ BBwidth = 57.0;
 
 //Robot Servo
 RSlength = 40.6;
-RSwidth = 36.6;
+RSwidth = 36.6;  //not the exact width
 RSheight = 19.8;
 RSdiameter = 4.0;
 RSA = 7.0;
@@ -42,20 +42,25 @@ PLockDiameter = 8.0;
 UBlength = 165.0;
 UBwidth = 150.0;
 UBheight = 20.0;
-UBgap1 = 20.0;
 UBgapCam = 14.0;
+UBgap1 = (UBlength - UBgapCam - ABwidth - BBwidth) / 2;
 UBholeGap = 7.0;
 
 //Lower Base
 LBlength = UBlength;
 LBwidth = UBwidth;
 LBheight = UBheight;
-
 LBgap1 = 30.0;
+
 //Front Wall
 FWlength = LBlength;
+FWwidth = 25.0;
+FWhole = 25.0;
+FWgap1 = (FWlength - FWhole)/2;  //distance to the gap
+FWgap2 = (FWlength - RGBlength)/2;
 
 //Servo Attachement
 SAlength = 20.0;
+SAlength = RSwidth;
 
 
