@@ -42,20 +42,22 @@ As a result, we may need to 3D print a tire shell for the wheels to not only att
 
 
 ### Entry by Shihan:
-
+I've been working on mileStone7 this week. The codes themselves weren't difficult since they were just a combination of our codes for mileStone4 and mileStone6. The difficult part was the colortape-colorblock distinguishing problem that had haunted us for quite a while. Earlier we somehow managed to get away with not solving the problem by some tricks such as lowering the camera and using a specifically easy color (green) for all our runs. But now we have to deal with all four colors, which becomes problematic now pixy camera sees color blocks everywhere...Earlier last week, John from the other team inspired us by mentioning a clever trick of making pixy camera ignoring all color blocks below a certain y threshold. We didn't eventually use the method for some reasons, but still, special thanks to him because from what he mentioned I brainstormed to a trick that works wonders for our purpose! There are two parts to this -- first we make the pixy camera extremely inclusive with color detection so it reliably picks up the entirety of a color tape as a huge color block rather than merely individual segments, which makes the color tape immediately distinguishable for its huge size and width to height ratio; then we use these two features as a filter. This not only allows our pixy camera to ignore the tapes, but also "distinguish" them, which could potentially become useful when we try to make the robot go to certain quadrants. But I'm also a bit concerned that making the camera undertake so many tasks might be risky, since the other teams could color their robots red/green/blue/yellow and easily mess things up for us (if they want to be mean...). I would still recommend using IR sensors as a safety measure. As for the encoders, I got the codes that reliably count rotation, as I had tested, but we still need to mount these encoders onto the wheels. Our earlier make-shift strategy of super-gluing the wheels onto the servo becomes a problem here, since the wheels tend to jiggle a bit, making the distance between the magnetic disk and Hall sensor vary. We need to fix that before we can mount the encoders. Steven and Wenxuan are onto it. And finally the internal map...I've built a crude internal map system before, but that was under the assumption that the servos could only go full speed forward, backward or stay stationary. We could try to modify our current codes to accomodate that, but I fear this will lead to great inefficiencies. So now I'm working on building a new set of codes that aren't limited by this assumption. Most of it will be trigonometry. I'll talk about it in detail next week.
 
 ### Entry by Wenxuan:
 I re-soldered the RGB sensor because Phil said that the soldering filler material needs to cover the gold ring on the RGB sensor, when I thought that the lesser the material, the better (as long as the soldering shape looks right).
 
 Then I started to use Openscad to construct 3D model to be printed. This task was important and needed very meticulous measurement of each component. Although I found some datasheet about each component online, I still measured them myself. Initially I thought that if I need to make a hole, the hole's diameter needed to be slightly larger than the measurement, or the stuff going through the hole would be stuck. Therefore, I often made the hole a little bit bigger than the measurement. The modelling was very complicated in terms of the putting parameters or variables in. I did the sketch for each component but I didn't draw down the model but just constructed the model on Openscad. Because there were way too many measurements and variables, I didn't create any global variables, even if I realized that then it meant that only I could read my own code based on the sketch I had. Still it was a serious problem because it meant that it would be hard to change the design later. However, I used addition and subtraction to indicate each step I took, instead of using one number. Moreover, Steven gave me some examples of components when 3D printer would be hard to print. Therefore, I changed my design a little bit to be better printed. 
 
-![Sketch 1](/Photos_and_Videos/Week7/Sketch 1.jpg)
+![Sketch_1](/Photos_and_Videos/Week7/Sketch_1.JPG)
+
 ![3D_model](/Photos_and_Videos/Week7/Openscad_model.png)
 
 Then I consulted with Nick, and he still suggested me creating a Variable List. Also, he said that it would be ideal to be as accurate as possible and there would a way to deal with holes that are too small, but we could do nothing about big holes. Moreover, he also gave some suggestions on my design, such as whether print some component to be one part or several parts. As a result, I'm designing a model again, creating a big variable list. I also measured the components again and did some sketch on the overall design
 
-![Sketch 1 modified](/Photos_and_Videos/Week7/Sketch 1 modified.jpg)
-![Sketch 2](/Photos_and_Videos/Week7/Sketch 2.jpg)
+![Sketch_1_modified](/Photos_and_Videos/Week7/Sketch_1_modified.JPG)
+
+![Sketch_2](/Photos_and_Videos/Week7/Sketch_2.JPG)
 
 ## Division of Labor
 **Steven Park**
