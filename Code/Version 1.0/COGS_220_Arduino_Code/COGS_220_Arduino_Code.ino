@@ -46,8 +46,8 @@ const int LEDG2 = A3;
 const int LEDB2 = A2;
 
 //shaft encoders
-const int encoderPin1 = 2;
-const int encoderPin2 = 3;
+//const int encoderPin1 = 2;
+//const int encoderPin2 = 3;
 
 //internal map variables
 const double one = 9.81747704246;
@@ -86,8 +86,8 @@ void setup() {
   pinMode(LEDR2, OUTPUT);
   pinMode(LEDG2, OUTPUT);
   pinMode(LEDB2, OUTPUT);
-  pinMode(encoderPin1, INPUT_PULLUP);
-  pinMode(encoderPin2, INPUT_PULLUP);
+  //pinMode(encoderPin1, INPUT_PULLUP);
+  //pinMode(encoderPin2, INPUT_PULLUP);
 
   //Attach the servo objects to the servos on the respective pins
   LeftWheel.attach(leftServoPin);
@@ -98,8 +98,8 @@ void setup() {
   Serial.begin(9600);
   //Serial.println("Instructions for the Robot: Enter value from 1000 to 2000");
 
-  attachInterrupt(digitalPinToInterrupt(encoderPin1), countTicks1, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(encoderPin2), countTicks2, CHANGE);
+  //attachInterrupt(digitalPinToInterrupt(encoderPin1), countTicks1, CHANGE);
+  //attachInterrupt(digitalPinToInterrupt(encoderPin2), countTicks2, CHANGE);
   
 }
 
@@ -157,9 +157,8 @@ void loop() {
     Serial.println("Meh");
     }*/
 
-  RGB();
-  disp();
-  dt(qua);
+  Drive(50, 50, 10);
+  Drive(0, 0, 10);
   
 }
 
