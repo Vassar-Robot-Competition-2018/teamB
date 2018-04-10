@@ -17,7 +17,7 @@ LBlength = UBlength;
 LBwidth = UBwidth;
 LBheight = 7.0;
 LBgap1 = 30.0;
-LBtranslate = -80.0;
+LBtranslate = -60.0;
 
 //Columns
 Clength = 8.0; 

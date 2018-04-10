@@ -59,7 +59,7 @@ RGBB = 1.0;
 
 //RGB attachment
 RAwidth = RGBlength; //y-axis
-RAheight = 15.0;  //z-axis
+RAheight = 20.0;  //z-axis
 RAdepth = 5.0; //x-axis
 
 //battery hole
@@ -72,7 +72,7 @@ AAlength = 20.0;
 AAwidth = 5.0; //y-axis
 AAheight = 40.0;
 AAdistance = 90.0;
-AAtranslate = 30.0;
+AAtranslate = 20.0;
 AAholeHeight = AAheight/2 - (AAtranslate - FWheight/2) + LBheight;
 
 //Columns
@@ -93,7 +93,7 @@ BWwidth = 5.0;
 BWheight = 30.0;
 
 //Robot Servo
-RSlength = 40.6;
+RSlength = 40.9;
 RSwidth = 36.6;  //not the exact width
 RSheight = 19.8;
 RSdiameter = 4.0;
@@ -108,7 +108,7 @@ RSF = 10.0;
 
 //Servo Attachement
 SAlength = 20.0;
-SAwidth = RSwidth-RSC-RSD;
+SAwidth = 20.0;
 SAHwidth = RSF-RSE; //y
 SAHlength = RSA;  //x
 SAHheight = RSheight;
@@ -145,41 +145,12 @@ module servo_attach(){
 
 
 difference(){
-    //combine upper and lower bases
-    union(){
-        rotate([0,0,180])
-        difference(){
-            cube_true(UBlength,UBwidth,UBheight);
-            //arduino board
-            translate([UBlength/2-ABlength/2-ABplugin2, UBgapCam/2+ABwidth/2,UBheight/4]) cube_true(ABlength,ABwidth,ABheight);
-            //plugin1
-            translate([UBlength/2-ABplugin2/2, UBgapCam/2+ABgap1+ABgap2/2,UBheight/4]) cube_true(ABplugin2,ABgap2,ABplugin2height);
-            //plugin2
-            translate([UBlength/2-ABplugin2/2, UBgapCam/2+ABgap1+ABgap2+ABgap3+ABgap4/2,UBheight/4]) cube_true(ABplugin2,ABgap4,ABplugin2height);
-            //bread board
-            translate([UBlength/2-ABlength/2-ABplugin2,-(UBgapCam/2+BBwidth/2),UBheight/4]) cube_true(BBlength,BBwidth,BBheight);
-            //camera attachment
-            rotate([0,0,180])
-            translate([UBlength/2-CAlength/2,0,0]){
-                rotate([0,90,0]) cylinder_base(CAlength, CAradius);
-            }
-        }
-
-
-
         //Lower Base
         union(){
             translate([0,0,LBtranslate]) cube_true(LBlength,LBwidth,LBheight);
             //front wall
             difference(){
                 translate([LBlength/2-FWwidth/2,0,LBheight/2+FWheight/2+LBtranslate]) cube_true(FWwidth,FWlength,FWheight);
-                //arms attachment
-                translate ([0,0,-AAtranslate]){
-                    translate([LBlength/2-AAlength/2,AAdistance/2+AAwidth/2,LBheight/2+FWheight/2+LBtranslate]) cube_true(AAlength,AAwidth,AAheight);
-                    translate([LBlength/2-AAlength/2,-(AAdistance/2+AAwidth/2),LBheight/2+FWheight/2+LBtranslate]) cube_true(AAlength,AAwidth,AAheight);
-                }
-                //RGB attachment
-                translate([LBlength/2-RAdepth/2,0,RAheight/2+LBtranslate-LBheight/2]) cube_true(RAdepth,RAwidth,RAheight);
                 //Battery Hole. y can be modified.
                 translate([LBlength/2-FWwidth/2,0,LBtranslate+LBheight/2+FWheight]) cube_true(BAdepth, BAlength, BAheight);
             }
@@ -192,7 +163,13 @@ difference(){
             mirror([0,1,0]) servo_attach();
             mirror([0,1,0]) mirror([1,0,0]) servo_attach();
         }
-    }
+        
+        //arms attachment
+        translate([0,0,-AAtranslate]){
+            translate([LBlength/2-AAlength/2,AAdistance/2+AAwidth/2,LBtranslate+AAheight/2-LBheight/2]) cube_true(AAlength,AAwidth,AAheight);
+            translate([LBlength/2-AAlength/2,-(AAdistance/2+AAwidth/2),LBtranslate-LBheight/2+AAheight/2]) cube_true(AAlength,AAwidth,AAheight);}
+            //RGB attachment
+            translate([LBlength/2-RAdepth/2,0,LBtranslate-LBheight/2+RAheight/2]) cube_true(RAdepth,RAwidth,RAheight);
     
     //holes
     hole_base(holeX,holeY,holeZ);
