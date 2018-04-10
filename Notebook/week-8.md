@@ -16,7 +16,18 @@ My hopes is that this version of the robot should allow Shihan to continue with 
 
 
 ### Entry by Wenxuan:
+I reprogrammed my model in openscad because I found that creating a variable list would be much more convenient for further changes. I also redid the calculation to center everything, which also helps with later adjustment. I also tried to reduce the weight of the model.
+![CodeChange](/Photos_and_Videos/Week8/Code.png)
 
+For the upper base, a seperate camera board would be attached by sliding in through the hole in the base. The camera board have holes in it so that the pixy camera can be screwed on. 
+![UpperBase](/Photos_and_Videos/Week8/UpperBase.png)
+
+Since the height of the camera board is undecided, depending on where we want to put our camera, the model is not set, but it would look like this:
+![Camera](/Photos_and_Videos/Week8/CameraBoard.png)
+
+For the lower base, a seperate RGB board and two arms would be attached to the front wall. The front wall also has another hole for the wires of the battery to be placed. The four cubes are used to stablize the servos. A back wall is put in place to prevent the battery from falling out.
+![LowerBase](/Photos_and_Videos/Week8/LowerBase.png)
+![RGBBoard](/Photos_and_Videos/Week8/RGB board.png)
 
 ## Division of Labor
 **Steven Park**
