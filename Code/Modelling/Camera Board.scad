@@ -53,15 +53,11 @@ CBheight = 30.0; //z
 CElength = 30.0;
 CEradius = CAradius;
 
-difference(){
-    cube_true(CamWidth,CamLength,CamHeight);
-    cylinder_base2();
-}
 
-/*
+
 union(){
     //board!!
-    //translate([CAlength/2,0,CBdistance - CBheight/2]) cube_true(CBwidth,CBlength,CBheight);
+    translate([CAlength/2,0,CBdistance - CBheight/2]) cube_true(CBwidth,CBlength,CBheight);
     //camera board
     translate([0,0,-CBheight]) camera_board();
     rotate([0,90,0]) cylinder_base(CAlength, CAradius);
