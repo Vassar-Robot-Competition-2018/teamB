@@ -13,7 +13,17 @@ My hopes is that this version of the robot should allow Shihan to continue with 
 
 
 ### Entry by Shihan:
+My design and implementation of internal map rely on several formulae I derived from trigonometry, which might not be sufficiently explained in my code comments, so I'll briefly explain my reasoning here in case anyone is curious.
 
+To begin with, we know the distances traveled by the left wheel and right wheel, and the width of the vehicle -- we'll use these three pieces of information to derive the formulae. For convenience I'll use x, y and L to represent them. x and y will not be measured (since the encoders don't work very well for our purpose), but will be determined by the commands we send to the two servos. We are assuming the servos travel the distance we instruct them to, which might not be entirely true but we don't need our internal map to be entirely accurate either.
+    distance traveled by the left wheel -> x
+    distance traveled by the right wheel -> y
+    width of the vehicle -> L
+Note that these three variables must have the same unit! I measured the distance traveled by the vehicle with Drive(50, 50, 10) in centimeters (15cm for now, but might change in the future as we switch to bigger wheels or as battery power drains). Thus we will use the distance traveled by Drive(1, 1, 1) as the basic unit for all our length measures (0.03cm for now). The width of the vehicle is measured to be 12cm, and we'll convert that to our Drive(1, 1, 1) unit (400). By using  Drive(1, 1, 1) as the basic unit, we can simply modify the Drive(ls, rs, d) function to increment a left counter and a right counter by ls*d or rs*d to get x and y. I defined a timer that will add1 for every loop run; the counters and the timer will be checked and reset to zero every time the timer hits 10. Such frequency of checking is required to ensure relative accuracy.
+
+Here are the steps I used to derive the three formulae:
+![pg1](/Photos_and_Videos/Week8/pg1.png)
+![pg2](/Photos_and_Videos/Week8/pg2.png)
 
 ### Entry by Wenxuan:
 I reprogrammed my model in openscad because I found that creating a variable list would be much more convenient for further changes. I also redid the calculation to center everything, which also helps with later adjustment. I also tried to reduce the weight of the model.
