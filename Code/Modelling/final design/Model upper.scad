@@ -24,10 +24,10 @@ RGBB = 1.0;
 
 
 //Upper Base
-UBlength = 130.0; //length is x-axis
-UBwidth = 130.0; //y-axis
-UBheight = 17.0;
-UBgapCam = 8.0;
+UBlength = 140.0; //length is x-axis
+UBwidth = 140.0; //y-axis
+UBheight = 15.0;
+UBgapCam = 7.0;
 UBgap1 = (UBlength - UBgapCam - ABwidth - BBwidth) / 2;
 UBholeGap = 7.0;
 
@@ -77,12 +77,12 @@ AAholeHeight = AAheight/2 - (AAtranslate - FWheight/2) + LBheight;
 
 //Columns
 Clength = 8.0; 
-Cheight = UBheight/2+LBheight/2-LBtranslate+Clength*2;
-Cdiameter = 4.0;
-Cradius = 2.0;
+Cheight = 30.0;
+Cdiameter = 6.0;
+Cradius = Cdiameter/2;
 CLockHeight = 1.5;
 CLockDiameter = 8.0;
-Cdistance = 5.0;  //the center of the hole
+Cdistance = 9.0;  //the center of the hole
 holeX = UBlength/2 - Cdistance;
 holeY = UBwidth/2 - Cdistance;
 holeZ = -(Cheight/2-Clength-UBheight/2);

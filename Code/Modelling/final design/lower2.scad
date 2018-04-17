@@ -22,10 +22,9 @@ RGBdiameter = 2.9;
 RGBA = 12.5;
 RGBB = 1.0;
 
-
 //Upper Base
-UBlength = 130.0; //length is x-axis
-UBwidth = 130.0; //y-axis
+UBlength = 140.0; //length is x-axis
+UBwidth = 140.0; //y-axis
 UBheight = 17.0;
 UBgapCam = 8.0;
 UBgap1 = (UBlength - UBgapCam - ABwidth - BBwidth) / 2;
@@ -39,9 +38,9 @@ CAlength = 30.0;
 //Lower Base
 LBlength = UBlength;
 LBwidth = UBwidth;
-LBheight = 7.0;
+LBheight = 15.0;
 LBgap1 = 30.0;
-LBtranslate = -60.0;
+LBtranslate = -(UBheight/2+30.0+LBheight);
 
 //Front Wall
 FWlength = LBwidth; //y-axis
@@ -68,24 +67,24 @@ BAheight = 20.0; //z
 BAdepth = FWwidth;
 
 //arms attachment
-AAlength = 20.0;
+AAlength = 22.0;
 AAwidth = 5.0; //y-axis
 AAheight = 40.0;
-AAdistance = 90.0;
+AAdistance = 85.0;
 AAtranslate = 20.0;
 AAholeHeight = AAheight/2 - (AAtranslate - FWheight/2) + LBheight;
 
 //Columns
 Clength = 8.0; 
-Cheight = UBheight/2+LBheight/2-LBtranslate+Clength*2;
-Cdiameter = 4.0;
-Cradius = 2.0;
+Cheight = FWheight+LBheight+UBheight+10.0;
+Cdiameter = 6.0;
+Cradius = Cdiameter/2;
 CLockHeight = 1.5;
 CLockDiameter = 8.0;
-Cdistance = 5.0;  //the center of the hole
+Cdistance = 9.0;  //the center of the hole
 holeX = UBlength/2 - Cdistance;
 holeY = UBwidth/2 - Cdistance;
-holeZ = -(Cheight/2-Clength-UBheight/2);
+holeZ = LBtranslate-LBheight/2+Cheight/2;
 
 //Back Wall
 BWlength = FWlength;
@@ -108,8 +107,8 @@ RSF = 10.0;
 
 //Servo Attachement
 SAlength = 20.0;
-SAwidth = 20.0;
-SAHwidth = RSF-RSE; //y
+SAwidth = 15.0;
+SAHwidth = 5.0; //y
 SAHlength = RSA;  //x
 SAHheight = RSheight;
 
@@ -122,9 +121,31 @@ module cylinder_base(x,y){
     cylinder(h=x,r=y,center=true,$fn=50);
 }
 
-module hole_base(x,y,z){
+//changing the holes to poles
+module pole_base(x,y,z){
     translate([x,y,z])
     cylinder(h=Cheight,r=Cradius,center = true, $fn=50);
+}
+
+//front wheels attachement
+FWAdiameter = 21.5;
+FWAradius = FWAdiameter/2;
+FWAheight2 = 2.5;
+FWAdistance = 15.0;
+FWAholeRadius = 2.0/2;
+
+FWApoleDiameter = 8.0;
+FWApoleRadius = FWApoleDiameter/2;
+FWApoleheight = 20.0;
+
+hole2X = UBlength/2 - FWAdistance;
+hole2Y = UBwidth/2 - FWAdistance;
+hole2Z = LBtranslate-LBheight/4;
+
+module front_wheel_holes(){
+    translate([hole2X,hole2Y,hole2Z]){
+        cylinder_base(LBheight/2,FWApoleRadius);
+    }
 }
 
 module servo_attach(){
@@ -158,22 +179,29 @@ difference(){
             translate([-(LBlength/2-BWwidth/2),0,LBheight/2+BWheight/2+LBtranslate]) cube_true(BWwidth,BWlength,BWheight);
             //servo attachment
             //translate([x,y,z]){} might need to move the servos to left to balance out the weight
+            translate([-(UBlength/2-BWwidth-RSlength/2-SAlength),0,0]){
             servo_attach();
             mirror([1,0,0]) servo_attach();
             mirror([0,1,0]) servo_attach();
             mirror([0,1,0]) mirror([1,0,0]) servo_attach();
+            }
+                
+            //poles
+            pole_base(holeX,holeY,holeZ);
+            pole_base(-holeX,holeY,holeZ);
+            pole_base(holeX,-holeY,holeZ);
+            pole_base(-holeX,-holeY,holeZ);
         }
         
-        //arms attachment
-        translate([0,0,-AAtranslate]){
-            translate([LBlength/2-AAlength/2,AAdistance/2+AAwidth/2,LBtranslate+AAheight/2-LBheight/2]) cube_true(AAlength,AAwidth,AAheight);
-            translate([LBlength/2-AAlength/2,-(AAdistance/2+AAwidth/2),LBtranslate-LBheight/2+AAheight/2]) cube_true(AAlength,AAwidth,AAheight);}
+            //arms attachment
+            translate([0,0,-AAtranslate+25.0]){
+            translate([LBlength/2-AAlength/2,AAdistance/2+AAwidth/2,LBtranslate+AAheight/2-LBheight/2]) cube_true(AAlength,AAwidth,AAheight-25.0);
+            translate([LBlength/2-AAlength/2,-(AAdistance/2+AAwidth/2),LBtranslate-LBheight/2+AAheight/2]) cube_true(AAlength,AAwidth,AAheight-25.0);}
+            
             //RGB attachment
-            translate([LBlength/2-RAdepth/2,0,LBtranslate-LBheight/2+RAheight/2]) cube_true(RAdepth,RAwidth,RAheight);
-    
-    //holes
-    hole_base(holeX,holeY,holeZ);
-    hole_base(-holeX,holeY,holeZ);
-    hole_base(holeX,-holeY,holeZ);
-    hole_base(-holeX,-holeY,holeZ);
+            translate([LBlength/2-RAdepth/2-5.0,0,LBtranslate-LBheight/2+RAheight/2]) cube_true(RAdepth,RAwidth,RAheight);
+            
+            //front wheels holes
+            front_wheel_holes();
+            mirror([0,1,0]) front_wheel_holes();
 }

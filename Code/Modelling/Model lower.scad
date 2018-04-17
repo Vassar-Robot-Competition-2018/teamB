@@ -24,7 +24,7 @@ RGBB = 1.0;
 
 
 //Upper Base
-UBlength = 130.0; //length is x-axis
+UBlength = 140.0; //length is x-axis
 UBwidth = 130.0; //y-axis
 UBheight = 17.0;
 UBgapCam = 8.0;
@@ -78,18 +78,18 @@ AAholeHeight = AAheight/2 - (AAtranslate - FWheight/2) + LBheight;
 //Columns
 Clength = 8.0; 
 Cheight = UBheight/2+LBheight/2-LBtranslate+Clength*2;
-Cdiameter = 4.0;
-Cradius = 2.0;
+Cdiameter = 6.0;
+Cradius = Cdiameter/2;
 CLockHeight = 1.5;
 CLockDiameter = 8.0;
-Cdistance = 5.0;  //the center of the hole
+Cdistance = 9.0;  //the center of the hole
 holeX = UBlength/2 - Cdistance;
 holeY = UBwidth/2 - Cdistance;
 holeZ = -(Cheight/2-Clength-UBheight/2);
 
 //Back Wall
 BWlength = FWlength;
-BWwidth = 5.0;
+BWwidth = 5.0;  
 BWheight = 30.0;
 
 //Robot Servo
@@ -109,7 +109,7 @@ RSF = 10.0;
 //Servo Attachement
 SAlength = 20.0;
 SAwidth = 20.0;
-SAHwidth = RSF-RSE; //y
+SAHwidth = RSF-RSE+1.0; //y
 SAHlength = RSA;  //x
 SAHheight = RSheight;
 
@@ -131,7 +131,7 @@ module servo_attach(){
     translate([RSlength/2+SAlength/2,LBwidth/2-SAwidth/2,LBtranslate+LBheight/2+RSheight/2]){
         difference(){
             cube_true(SAlength,SAwidth,RSheight);
-            translate([-(SAlength/2-RSA/2), SAwidth/2-RSE/2,0]) cube_true(SAHlength,SAHwidth,SAHheight);
+            translate([-(SAlength/2-RSA/2), SAwidth/2-RSE/2-1.0,0]) cube_true(SAHlength,SAHwidth,SAHheight);
             //holes
             translate([-(SAlength/2-RSradius),0,RSheight/2-RSdistance-RSradius]){
                 rotate([90,0,0]) cylinder_base(SAwidth,RSradius);
@@ -148,6 +148,8 @@ difference(){
         //Lower Base
         union(){
             translate([0,0,LBtranslate]) cube_true(LBlength,LBwidth,LBheight);
+            //poles
+            
             //front wall
             difference(){
                 translate([LBlength/2-FWwidth/2,0,LBheight/2+FWheight/2+LBtranslate]) cube_true(FWwidth,FWlength,FWheight);
@@ -156,7 +158,7 @@ difference(){
                     translate([LBlength/2-AAlength/2,AAdistance/2+AAwidth/2,LBtranslate+AAheight/2-LBheight]) cube_true(AAlength,AAwidth,AAheight);
                     translate([LBlength/2-AAlength/2,-(AAdistance/2+AAwidth/2),LBtranslate-LBheight+AAheight/2]) cube_true(AAlength,AAwidth,AAheight);}
                 //RGB attachment
-                translate([LBlength/2-RAdepth/2,0,LBtranslate-LBheight/2]) cube_true(RAdepth,RAwidth,RAheight);
+                translate([LBlength/2-RAdepth/2-8.0,0,LBtranslate-LBheight/2]) cube_true(RAdepth,RAwidth,RAheight);
                 //Battery Hole. y can be modified.
                 translate([LBlength/2-FWwidth/2,0,LBtranslate+LBheight/2+FWheight]) cube_true(BAdepth, BAlength, BAheight);
             }
@@ -164,11 +166,13 @@ difference(){
             translate([-(LBlength/2-BWwidth/2),0,LBheight/2+BWheight/2+LBtranslate]) cube_true(BWwidth,BWlength,BWheight);
             //servo attachment
             //translate([x,y,z]){} might need to move the servos to left to balance out the weight
+            translate([-(UBlength/2-BWwidth-RSlength/2-SAlength),0,0]){
             servo_attach();
             mirror([1,0,0]) servo_attach();
             mirror([0,1,0]) servo_attach();
             mirror([0,1,0]) mirror([1,0,0]) servo_attach();
         }
+    }
     
     //holes
     hole_base(holeX,holeY,holeZ);
