@@ -1,19 +1,19 @@
 //Unit: millimeter
 //Arduino board
-ABwidth = 53.34;
-ABlength = 102;
+ABwidth = 53.7;
+ABlength = 102.2;
 ABheight = 10.0;
 ABplugin1 = 2.1;
 ABplugin2 = 7.0;
 ABplugin2height = 10.0;
-ABgap1=9.0;
-ABgap2=12.0;
-ABgap3=19.0;
-ABgap4=9.0;
+ABgap1=8.5;
+ABgap2=13.0;
+ABgap3=18.0;
+ABgap4=9.5;
 
 //Bread Board
-BBlength = 85.0;
-BBwidth = 57.0;
+BBlength = 85.2;
+BBwidth = 57.2;
 BBheight = 10.0;
 
 //RGB
@@ -146,7 +146,6 @@ module servo_attach(){
 
 difference(){
     //combine upper and lower bases
-    union(){
         rotate([0,0,180])
         difference(){
             cube_true(UBlength,UBwidth,UBheight);
@@ -164,35 +163,6 @@ difference(){
                 rotate([0,90,0]) cylinder_base(CAlength, CAradius);
             }
         }
-
-
-
-        //Lower Base
-        union(){
-            translate([0,0,LBtranslate]) cube_true(LBlength,LBwidth,LBheight);
-            //front wall
-            difference(){
-                translate([LBlength/2-FWwidth/2,0,LBheight/2+FWheight/2+LBtranslate]) cube_true(FWwidth,FWlength,FWheight);
-                //arms attachment
-                translate ([0,0,-AAtranslate]){
-                    translate([LBlength/2-AAlength/2,AAdistance/2+AAwidth/2,LBheight/2+FWheight/2+LBtranslate]) cube_true(AAlength,AAwidth,AAheight);
-                    translate([LBlength/2-AAlength/2,-(AAdistance/2+AAwidth/2),LBheight/2+FWheight/2+LBtranslate]) cube_true(AAlength,AAwidth,AAheight);
-                }
-                //RGB attachment
-                translate([LBlength/2-RAdepth/2,0,RAheight/2+LBtranslate-LBheight/2]) cube_true(RAdepth,RAwidth,RAheight);
-                //Battery Hole. y can be modified.
-                translate([LBlength/2-FWwidth/2,0,LBtranslate+LBheight/2+FWheight]) cube_true(BAdepth, BAlength, BAheight);
-            }
-            //back wall
-            translate([-(LBlength/2-BWwidth/2),0,LBheight/2+BWheight/2+LBtranslate]) cube_true(BWwidth,BWlength,BWheight);
-            //servo attachment
-            //translate([x,y,z]){} might need to move the servos to left to balance out the weight
-            servo_attach();
-            mirror([1,0,0]) servo_attach();
-            mirror([0,1,0]) servo_attach();
-            mirror([0,1,0]) mirror([1,0,0]) servo_attach();
-        }
-    }
     
     //holes
     hole_base(holeX,holeY,holeZ);

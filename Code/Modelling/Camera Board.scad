@@ -1,5 +1,5 @@
 //Camera Attachment
-CAdiameter = 6.0;
+CAdiameter = 5.0;
 CAradius = CAdiameter/2;
 CAlength = 30.0;
 
@@ -29,6 +29,7 @@ module cylinder_base2(){
 }
 
 module camera_board(){
+    translate([CAlength/2,0,0])
     difference(){
         cube_true(CamWidth,CamLength,CamHeight);
         //hole:top left
@@ -42,7 +43,24 @@ module camera_board(){
     }
 }
 
+//depending on where we wanna put the camera, board CBheight can be changed. 
+CBdistance = CAdiameter;
+CBlength = 18.0; //y
+CBwidth = CamWidth; //x
+CBheight = 30.0; //z
+
+//cylinder extension
+CElength = 30.0;
+CEradius = CAradius;
+
+
+
 union(){
-    camera_board();
+    //board!!
+    translate([CAlength/2,0,CBdistance - CBheight/2]) cube_true(CBwidth,CBlength,CBheight);
+    //camera board
+    translate([0,0,-CBheight]) camera_board();
     rotate([0,90,0]) cylinder_base(CAlength, CAradius);
+    //longer cylinder?? depending on where you wanna put the camera
+    translate([-CAlength/2,0,0]) rotate([0,90,0]) cylinder_base(CElength,CEradius);
 }
