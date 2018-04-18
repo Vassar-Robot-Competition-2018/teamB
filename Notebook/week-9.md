@@ -13,7 +13,7 @@ However, we came across several problems this week that held us back significant
 Overall, it has been a pretty tumultuous week. With time running short, we can only hope that the next week goes smoother.
 
 ### Entry by Shihan:
-
+I'll be honest...not much progress this week. The plan was to test out my codes for the internal map, but since we switched to smaller wheels, which have worse friction than the big ones, our robot tend to drag on the ground, not moving as it was instructed to. Steven just solved this today by modifying the original big wheels to fit onto the servos, so hopefully after Wenxuan's printings are complete we can go back to more codings and testings. We also discussed a bit about the strategy we should adopt, as well as the job division. I also completed the functions for the small servos we used to drive the arms, but haven't been able to thoroughly test them. 
 
 ### Entry by Wenxuan:
 
