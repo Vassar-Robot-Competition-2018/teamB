@@ -14,6 +14,7 @@ In case the internal map doesn't work and the robot can't navigate back to the o
 
 Moreover, I was thinking about using RGB sensors to measure the angle/rough orientation when the robot is corssing the tapes. Josh suggested that I used to RGB sensors. By measuring time each RGB sensors is crossing the tape, the distance that each sensor travels can be recorded (proportional to the time, and we need trials and errors to find the parameter). The angle can be calculated based on the distance between the two sensors on the robot and the distance travelled by each robot, and using inverse sine we can find the angle. However, I'm not sure it's worth the effort, so I will do this the last when everything else is in place.
 
+Furthermore, if internal map just does not work or not precise enough, we will just use RGB sensors but it has more randomness.
 
 ## Division of Labor
 **Steven Park**
