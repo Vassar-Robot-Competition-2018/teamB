@@ -26,17 +26,48 @@ String readInstructions;
 //Saves the current color RGB sees
 int current = 0;
 
-//sensors & servos & LED & switch pins
+//am I holding a block???
+int hold = 0;
+
+//which quadrant did i start in???
+int qua = 0;
+
+//servos
 //NOTE: DO NOT USE pin 0 or pin 1
-const int leftServoPin = 5;             //Pin #6
-const int rightServoPin = 7;            //Pin #7
-//const int QREPin;
+const int leftServoPin = 5;             
+const int rightServoPin = 7;            
+
+//LEDs
 const int LEDR = A7;
 const int LEDG = A6;
 const int LEDB = A5;
 const int LEDR2 = A4;
 const int LEDG2 = A3;
 const int LEDB2 = A2;
+
+//arms
+Servo LeftArm;
+Servo RightArm;
+const int larmPin = 8;
+const int rarmPin = 9;
+
+//internal map variables
+//Drive(10, 10, 10) = 6.1cm;
+//Drive(1, 1, 1) = 0.061cm
+const float unit = 0.061;
+//width of body = 12.0cm
+const float L = 12.0 / unit;
+const float time_for_one_turn = L * PI;
+//these will be reset every 50 counts
+unsigned int timer = 0;
+long ticks1 = 0; //left wheel
+long ticks2 = 0; //right wheel
+//cartesian coordinates tracking the location of robot, updated every 50 counts
+double xPos = 0.0;
+double yPos = 0.0;
+//direction the head is pointing to, ranges from 0 to 2PI, increasing clockwise, used to update xPos and yPos
+float directionTrack = 7*PI/4;
+int amIHome = 1;
 
 void setup() {
   /*
@@ -73,12 +104,16 @@ void setup() {
   //Attach the servo objects to the servos on the respective pins
   LeftWheel.attach(leftServoPin);
   RightWheel.attach(rightServoPin);
+  LeftArm.attach(larmPin);
+  RightArm.attach(rarmPin);
 
   //Setting the Serial Monitor:
   //The Serial Monitor will be used to give commands to the robot and keep track of those commands.
   Serial.begin(9600);
   //Serial.println("Instructions for the Robot: Enter value from 1000 to 2000");
+  
 }
+
 
 void loop() {
   /*
@@ -88,14 +123,12 @@ void loop() {
     readInstructions += c;
     delay(2);
     }
-
     //
     if(readInstructions.length() > 0){
     //Read the captured String
     Serial.println(readInstructions);
     //Convert from String to int
     int x = readInstructions.toInt();
-
     //If given proper input for servo microseconds
     if((x >= 1000) && (x <= 2000)){
       Serial.print("Servo Microseconds:");
@@ -103,13 +136,11 @@ void loop() {
       LeftWheel.writeMicroseconds(x);
       RightWheel.writeMicroseconds((2000 - x) + 1000);
     }
-
     //If given input outside of range
     else{
       Serial.print("Please type in a value that fits within the range of 1000 to 2000");
     }
     }
-
     //Empty the command line for the next input
     readInstructions = "";
   */
@@ -138,16 +169,103 @@ void loop() {
     Serial.println("Meh");
     }*/
 
-
-Drive(30, 30, 1);
-  //RGB();
-  //disp();
-
+  testDrive();
+  if(amIHome == 0) {
+    homing();
+  }
 }
 
-void randDrive() {
-  int randi = random(0, 50);
-  Drive(randi, -randi, 1000);
+void testDrive() {
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(20, 40, 1);
+  Drive(20, 40, 1);
+  Drive(20, 40, 1);
+  Drive(20, 40, 1);
+  Drive(20, 40, 1);
+  Drive(20, 40, 1);
+  Drive(20, 40, 1);
+  Drive(20, 40, 1);
+  Drive(20, 40, 1);
+  Drive(20, 40, 1);
+  Drive(30, 20, 1);
+  Drive(30, 20, 1);
+  Drive(30, 20, 1);
+  Drive(30, 20, 1);
+  Drive(30, 20, 1);
+  Drive(30, 20, 1);
+  Drive(30, 20, 1);
+  Drive(30, 20, 1);
+  Drive(30, 20, 1);
+  Drive(30, 20, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  Drive(50, 50, 1);
+  amIHome = 0;
+}
+
+void homing() {
+  float a, b, t;
+  a = tanh(yPos/xPos);
+  b = ((3*PI)/2) - a - directionTrack;
+  t = time_for_one_turn * (b/(2*PI));
+  Drive(50, -50, t);
+  while(1) {
+    Drive(0, 0, 1);
+  }
+}
+
+void internalMapInc() {
+  float angle = 0.0;
+  //every 50 counts update location information
+  if (timer >= 50) {
+    angle = directionTrack - ((ticks2 - ticks1) / (2*L));
+    if (angle < 0.0) {
+      angle = angle + (2*PI);
+    } else if (angle >= (2*PI)) {
+      angle = angle - (2*PI);
+    }
+    
+    //update xPos and yPos
+    if (ticks2 > ticks1) {
+      xPos = xPos + (((2*L*ticks1) / (ticks2 - ticks1)) + L) * sin((ticks2 - ticks1) / (4*L)) * cos(angle);
+      yPos = yPos + (((2*L*ticks1) / (ticks2 - ticks1)) + L) * sin((ticks2 - ticks1) / (4*L)) * sin(angle);
+    } else if (ticks1 > ticks2) {
+      xPos = xPos + (((2*L*ticks2) / (ticks1 - ticks2)) + L) * sin((ticks1 - ticks2) / (4*L)) * cos(angle);
+      yPos = yPos + (((2*L*ticks2) / (ticks1 - ticks2)) + L) * sin((ticks1 - ticks2) / (4*L)) * sin(angle);
+    } else if (ticks1 == ticks2) {
+      xPos = xPos + ticks1 * cos(angle);
+      yPos = yPos + ticks1 * sin(angle);
+    }
+
+    //update directionTrack
+    directionTrack = directionTrack - (ticks2 - ticks1) / L;
+    if (directionTrack < 0.0) {
+      directionTrack = directionTrack + (2*PI);
+    } else if (directionTrack >= (2*PI)) {
+      directionTrack = directionTrack - (2*PI);
+    }
+    
+    //reset ticks and timer
+    ticks1 = 0;
+    ticks2 = 0;
+    timer = 0;
+  }
 }
 
 void disp() {
@@ -162,14 +280,15 @@ void disp() {
   } else {
     setColor2(0, 0, 0);
   }
-  Drive(30, 30, 1);
 }
+
 
 void RGB() {
   uint16_t clear, red, green, blue;
 
   tcs.getRawData(&red, &green, &blue, &clear);
 
+  /*
   Serial.print("C:\t"); Serial.print(clear);
   Serial.print("\tR:\t"); Serial.print(red);
   Serial.print("\tG:\t"); Serial.print(green);
@@ -177,32 +296,167 @@ void RGB() {
   Serial.print("\tS:\t"); Serial.print(current);
 
   Serial.println();
-
+  */
 
   if (red > 600 && green < 400 && blue < 400) {
     //setColor2(255, 0, 0);
+    previous = current;
     current = 1;
+    if (qua == 0) {
+      qua = 1;
+      previous = 1
+      amIHome = 0;
+    }
     //randDrive();
-  } else if (green > 1000 && red < 1000 && blue < 1000) {
+  } else if (green > 1000 && red < 1000 && blue < 700) {
     //setColor2(0, 255, 0);
     current = 2;
+    if (qua == 0) {
+      qua = 2;
+      previous = 2
+      amIHome = 0;
+    }
     //randDrive();
   } else if (blue > 1000 && red < 1000 && green < 2100) {
     //setColor2(0, 0, 255);
     current = 3;
+    if (qua == 0) {
+      qua = 3;
+      previous = 3
+      amIHome = 0;
+    }
     //randDrive();
-  } else if (red > 1000 && green < 2500 && blue < 1000) {
+  } else if (red > 1000 && green < 2500 && blue < 800) {
     //setColor2(255, 255, 0);
     current = 4;
+    if (qua == 0) {
+      qua = 4;
+      previous = 4
+      amIHome = 0;
+    }
     //randDrive();
-  } else if (red > 1500 && green > 2000 && blue > 1800) {
-    setColor2(255, 255, 255);
+  } else if (red > 1400 && green > 1400 && blue > 1300) {
     EscapeBack();
   } //else {
   //setColor2(0, 0, 0);
   //}
 
-} 
+}
+
+
+//integrated drive-to
+//input: one of the ints 1, 2, 3, or 4, representing colors red, green, blue, and yellow respectively
+//output: drive towards the specified color
+void dt(int cl) {
+  
+  uint16_t blocks;
+  int targetIndex;
+  int targetX;
+  int direct;
+  float w;
+  float h;
+  float wh;
+  int siz;
+  //float www;
+
+  //fetch all color blocks for further processing
+  blocks = camera.getBlocks();
+
+  //the largest block will be the target
+  float sizes[blocks];
+
+  //use x-coordinate to guide
+  float x[blocks];
+
+  //float ww[blocks];
+
+  //initialize both sizes and x to be all zeroes
+  for (int i = 0; i < blocks; i++) {
+    sizes[i] = 0;
+    x[i] = 0;
+    //ww[i] = 0;
+  }
+
+  if (blocks == 0 && hold == 0) {
+    randomDrive();
+    setColor(0, 0, 0);
+  } else if (hold == 1) {
+    Drive(30, 30, 1);
+  } else {
+    //get all blocks of the specified color
+    for (int i = 0; i < blocks; i++) {
+      w = (float)camera.blocks[i].width;
+      h = (float)camera.blocks[i].height;
+      siz = (camera.blocks[i].width * camera.blocks[i].height);
+      wh = w / h;
+      if ((camera.blocks[i].signature == cl) && (wh < 1.2) && (siz < 8000)) {
+        sizes[i] = siz;
+        x[i] = camera.blocks[i].x;
+        //ww[i] = wh;
+      }
+    }
+
+    targetIndex = getMax(sizes);
+    targetX = x[targetIndex];
+    direct = targetX - 159;
+    //www = ww[getMax(sizes)];
+
+    if (sizes[getMax(sizes)] >= 4000) {
+      hold = 1;
+    }
+
+    //x ranges between 0 and 319, so midpoint is 159
+    //store targetX-159 as reference for Drive()
+    if (targetX == 0) {
+      randomDrive();
+    } else if (direct < 0 && (abs(direct) > 10)) {
+      Drive((-direct * 50 / 159), 0, 10);
+    } else if (direct > 0 && (abs(direct) > 10)) {
+      Drive(0, direct * 50 / 159, 10);
+    } else {
+      Drive(30, 30, 10);
+    }
+    
+    //set LED color
+    switch (cl) {
+      case 0:
+        setColor(0, 0, 0);
+        break;
+      case 1: 
+        setColor(255, 0, 0);
+        break;
+      case 2:
+        setColor(0, 255, 0);
+        break;
+      case 3:
+        setColor(0, 0, 255);
+        break;
+      case 4:
+        setColor(0, 255, 255);
+        break;
+    }
+  }
+    /*
+    Serial.print("Direct:\t");
+    Serial.print(direct);
+    Serial.print("\t\t");
+    Serial.print("targetX:\t");
+    Serial.print(targetX);
+    Serial.print("\t\t");
+    Serial.print("Area:\t");
+    Serial.print(sizes[targetIndex]);
+    Serial.print("\t\t");
+    Serial.print("blocks\t:");
+    Serial.print(blocks);
+    Serial.print("\t\t");
+    Serial.print("hold\t:");
+    Serial.print(hold);
+    Serial.print("\t\t");
+    Serial.print("www\t:");
+    Serial.print(www);
+    Serial.println();
+    */    
+}
 
 //Drives towards the closest red block
 void dtr() {
@@ -275,9 +529,11 @@ void dtg() {
   //use x-coordinate to guide
   float x[blocks];
 
-  if (blocks == 0) {
+  if (blocks == 0 && hold == 0) {
     randomDrive();
     setColor(0, 0, 0);
+  } else if (hold == 1) {
+    Drive(30, 30, 1);
   } else {
     //initialize both sizes and x to be all zeroes
     for (int i = 0; i < blocks; i++) {
@@ -293,20 +549,22 @@ void dtg() {
       }
     }
 
+    
+
     targetIndex = getMax(sizes);
     targetX = x[targetIndex];
     direct = targetX - 159;
 
     if (sizes[getMax(sizes)] >= 10000) {
-      Drive(50, 50, 1);
+      hold = 1;
     }
 
     //x ranges between 0 and 319, so midpoint is 159
     //store targetX-159 as reference for Drive()
     if (direct < 0 && (abs(direct) > 10)) {
-      Drive(0, (-direct * 50 / 159), 1);
+      Drive((-direct * 50 / 159), 0, 1);
     } else if (direct > 0 && (abs(direct) > 10)) {
-      Drive(direct * 50 / 159, 0, 1);
+      Drive(0, direct * 50 / 159, 1);
     } else {
       Drive(30, 30, 1);
     }
@@ -315,7 +573,7 @@ void dtg() {
     setColor(0, 255, 0);
 
   }
-  /*
+    /*
     Serial.print("Direct:\t");
     Serial.print(direct);
     Serial.print("\t\t");
@@ -327,8 +585,11 @@ void dtg() {
     Serial.print("\t\t");
     Serial.print("blocks\t:");
     Serial.print(blocks);
+    Serial.print("\t\t");
+    Serial.print("hold\t:");
+    Serial.print(hold);
     Serial.println();
-  */
+    */
 }
 
 //Drives towards the closest blue block
@@ -448,8 +709,26 @@ void Drive(float ls, float rs, float d) {
   ls = -ls;
   rs = rs;
   LeftWheel.writeMicroseconds(1500 + 10 * ls);
-  RightWheel.writeMicroseconds(1500 + 10 * rs);
-  delay(d);
+  RightWheel.writeMicroseconds(1500 + 9.6 * rs);
+  delay(d*100);
+  timer = timer + d;
+  ticks1 = ticks1 + ls * d;
+  ticks2 = ticks2 + rs * d;
+  internalMapInc();
+  Serial.print(amIHome);
+  Serial.print("\t");
+  Serial.print(timer);
+  Serial.print("\t");
+  Serial.print(xPos);
+  Serial.print("\t");
+  Serial.print(yPos);
+  Serial.print("\t");
+  Serial.print(directionTrack);
+  Serial.print("\t");
+  Serial.print(ticks1);
+  Serial.print("\t");
+  Serial.print(ticks2);
+  Serial.println();
 }
 
 //helper function used to get the minimum index from a list
@@ -469,34 +748,33 @@ int getMax(float* array)
 }
 
 void randomDrive() {
-  Drive(random(0, 25), random(0, 25), 10);
+  Drive(random(0, 50), random(0, 50), 10);
 }
 
 void EscapeBack() {
-  Drive(-30, -30, 1000);
+  setColor2(255, 255, 255);
+  hold = 0;
+  Drive(-30, -30, 50);
   //turn a random degree to avoid hitting into the edge again
   int rand = 25;
-  Drive(rand, -rand, 1000);
+  Drive(rand, -rand, 50);
 }
 
 //detect Dark vs. Light objects
 //lower number (lower than 3000) means light objects
 /*
   int readQR(){
-
   pinMode( QREPin, OUTPUT );
   digitalWrite( QREPin, HIGH );
   delayMicroseconds(10);
   pinMode( QREPin, INPUT );
-
   long TIME = micros();
-
   //time how long the input is HIGH, but quit after 3ms.
   while(digitalRead(QREPin) == HIGH && micros() - TIME < 3000) {
     int diff = micros() - TIME;
     printf("HIGH input lasts %d", diff);
     return diff;
-  }
+  }       
   }
 */
 
@@ -525,3 +803,6 @@ void setColor2(int red, int green, int blue)
   analogWrite(LEDG2, green);
   analogWrite(LEDB2, blue);
 }
+
+
+

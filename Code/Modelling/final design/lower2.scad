@@ -34,11 +34,10 @@ UBholeGap = 7.0;
 CAdiameter = 6.0;
 CAradius = CAdiameter/2;
 CAlength = 30.0;
-
 //Lower Base
 LBlength = UBlength;
 LBwidth = UBwidth;
-LBheight = 15.0;
+LBheight = 9.0;
 LBgap1 = 30.0;
 LBtranslate = -(UBheight/2+30.0+LBheight);
 
@@ -76,7 +75,7 @@ AAholeHeight = AAheight/2 - (AAtranslate - FWheight/2) + LBheight;
 
 //Columns
 Clength = 8.0; 
-Cheight = FWheight+LBheight+UBheight+10.0;
+Cheight = FWheight+10.0;
 Cdiameter = 6.0;
 Cradius = Cdiameter/2;
 CLockHeight = 1.5;
@@ -84,7 +83,7 @@ CLockDiameter = 8.0;
 Cdistance = 9.0;  //the center of the hole
 holeX = UBlength/2 - Cdistance;
 holeY = UBwidth/2 - Cdistance;
-holeZ = LBtranslate-LBheight/2+Cheight/2;
+holeZ = LBtranslate+LBheight/2+Cheight/2;
 
 //Back Wall
 BWlength = FWlength;
@@ -108,7 +107,7 @@ RSF = 10.0;
 //Servo Attachement
 SAlength = 20.0;
 SAwidth = 15.0;
-SAHwidth = 5.0; //y
+SAHwidth = 4.0; //y
 SAHlength = RSA;  //x
 SAHheight = RSheight;
 
@@ -144,7 +143,7 @@ hole2Z = LBtranslate-LBheight/4;
 
 module front_wheel_holes(){
     translate([hole2X,hole2Y,hole2Z]){
-        cylinder_base(LBheight/2,FWApoleRadius);
+        cylinder_base(LBheight+3.0,FWApoleRadius);
     }
 }
 
@@ -152,12 +151,13 @@ module servo_attach(){
     translate([RSlength/2+SAlength/2,LBwidth/2-SAwidth/2,LBtranslate+LBheight/2+RSheight/2]){
         difference(){
             cube_true(SAlength,SAwidth,RSheight);
-            translate([-(SAlength/2-RSA/2), SAwidth/2-RSE/2,0]) cube_true(SAHlength,SAHwidth,SAHheight);
+            translate([-(SAlength/2-RSA/2), SAwidth/2-RSE/2+1.0,0]) cube_true(SAHlength,SAHwidth+2.0,SAHheight);
+            //translate([-(SAlength/2-RSA/2)-2.0, SAwidth/2-RSE/2+1.0,0]) cube_true(SAHlength-3.0,SAHwidth+1.0,SAHheight);
             //holes
-            translate([-(SAlength/2-RSradius),0,RSheight/2-RSdistance-RSradius]){
+            translate([-(SAlength/2-RSradius-1.5),0,RSheight/2-RSdistance-RSradius]){
                 rotate([90,0,0]) cylinder_base(SAwidth,RSradius);
             }
-            translate([-(SAlength/2-RSradius),0,-(RSheight/2-RSdistance-RSradius)]){
+            translate([-(SAlength/2-RSradius-1.5),0,-(RSheight/2-RSdistance-RSradius)]){
                 rotate([90,0,0]) cylinder_base(SAwidth,RSradius);
             }
         }
@@ -199,7 +199,9 @@ difference(){
             translate([LBlength/2-AAlength/2,-(AAdistance/2+AAwidth/2),LBtranslate-LBheight/2+AAheight/2]) cube_true(AAlength,AAwidth,AAheight-25.0);}
             
             //RGB attachment
-            translate([LBlength/2-RAdepth/2-5.0,0,LBtranslate-LBheight/2+RAheight/2]) cube_true(RAdepth,RAwidth,RAheight);
+            translate([LBlength/2-RAdepth/2-4.0,0,LBtranslate-LBheight/2+RAheight/2-3.2-1.5]) cube_true(RAdepth,RAwidth,RAheight-6.0-3.0);
+            translate([LBlength/2-RAdepth/2-4.0,-55.0,LBtranslate-LBheight/2+RAheight/2-3.2-1.5]) cube_true(RAdepth,RAwidth,RAheight-6.0-3.0);
+            mirror([0,1,0]) translate([LBlength/2-RAdepth/2-4.0,-55.0,LBtranslate-LBheight/2+RAheight/2-3.2-1.5]) cube_true(RAdepth,RAwidth,RAheight-6.0-3.0);
             
             //front wheels holes
             front_wheel_holes();

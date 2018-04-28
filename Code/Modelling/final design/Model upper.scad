@@ -77,7 +77,7 @@ AAholeHeight = AAheight/2 - (AAtranslate - FWheight/2) + LBheight;
 
 //Columns
 Clength = 8.0; 
-Cheight = 30.0;
+Cheight = 11.0;
 Cdiameter = 6.0;
 Cradius = Cdiameter/2;
 CLockHeight = 1.5;
@@ -85,7 +85,7 @@ CLockDiameter = 8.0;
 Cdistance = 9.0;  //the center of the hole
 holeX = UBlength/2 - Cdistance;
 holeY = UBwidth/2 - Cdistance;
-holeZ = -(Cheight/2-Clength-UBheight/2);
+holeZ = UBheight/2 - UBheight + Cheight - Cheight/2;
 
 //Back Wall
 BWlength = FWlength;
