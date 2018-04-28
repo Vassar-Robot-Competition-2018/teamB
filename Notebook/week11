@@ -31,7 +31,9 @@ We have no clue about the robot's orientation in the current quadrant, so we don
   a)Drop the block if CURRENT = QUADRANT (the original quadrant).
   b)Go back in a straight route if PREVIOUS = QUADRANT. this is kind of redundant, because the robot should have dropped the block previously, but just to make sure if there's an error. 
   c)if the QUADRANT is in a diagonal relation with the CURRENT quadrant, the robot turns 90 degrees twice (and crosses the tapes twice). I set the constant for each quadrant in a special way, so that if the target quadrant is in the diagonal, addition of the two quadrants = 5. This is just to simplify the code, so we don't have to hard code for each specific quadrant.
+  
   ![Relation](/Photos_and_Videos/Week11/Relation.png)
+  
   the direction of turning (either left or right) depends on the relation function that I'll explain below(in (3)).
   d)else it means the QUADRANT is the next to the CURRENT (but it's not the PREVIOUS), the robot will turn 90 degrees once.
 
@@ -44,3 +46,15 @@ We have no clue about the robot's orientation in the current quadrant, so we don
       return Direction = 1;
     } else return Direction = 2;
   }
+  
+## Division of Labor
+**Steven Park**
+- Worked on the robot body especially the arms
+- Helped with crimping 8 wires
+
+**Wenxuan Guo**
+- Worked on the RGB sensor code for backup
+- Crimped 8 wires for two other RGB sensors
+
+**Shihan Zhao**
+- Worked on the internal map
