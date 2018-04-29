@@ -1,4 +1,4 @@
-# Week 10 (4/17/18 - 4/23/18)
+# Week 11 (4/24/18 - 4/30/18)
 
 ## Progress Made:
 
@@ -10,9 +10,9 @@
 ### Entry by Wenxuan:
 I worked on the backup plan if the internal map doesn't work, and there will be more randomness in the internal code because the only environmental cues we are using is the tape on the ground and the robot only gets the cues when it crosses the tapes.
 Here's the variable list:
-int QUADRANT = 0;
-int previous = 0;
-int current = 0;
+int QUADRANT = 0; //the home quadrant
+int previous = 0;  //the previous quadrant it's in
+int current = 0;  //the current quadrant it's in
 int RED = 1;
 int GREEN = 2;
 int BLUE = 4;
@@ -20,7 +20,7 @@ int YELLOW = 3;
 int counter = 0;
 
 1)set QUADRANT: set the original quadrant
-  First the robot turn around 45 degrees and start driving forward to cross the tapes. The RGB() function is embedded in the Drive function, so the CURRENT (quadrant) and PREVIOUS (quadrant) variables are constantly updated. 
+  First (the robot turn around 45 degrees and) start driving forward to cross the tapes. The RGB() function is embedded in the Drive function, so the CURRENT (quadrant) and PREVIOUS (quadrant) variables are constantly updated. 
   Using the RGB() function with a counter (= 0), as soon as the counter added up to one, set QUADRANT = CURRENT.
   Then the robot will use its camera to find blocks and pick it up.
 
@@ -30,7 +30,7 @@ When the robot picks up a block, it will drop the block if the current quadrant 
 We have no clue about the robot's orientation in the current quadrant, so we don't know whether making it go back in a straight route means going back to the PREVIOUS quadrant, or turning 90 degrees means going to the next quadrant. Therefore, we roughly correct its orientation by first letting it crosses another tape boundaries. And after crossing another boundary (using counter to check), we can make it:
   a)Drop the block if CURRENT = QUADRANT (the original quadrant).
   b)Go back in a straight route if PREVIOUS = QUADRANT. this is kind of redundant, because the robot should have dropped the block previously, but just to make sure if there's an error. 
-  c)if the QUADRANT is in a diagonal relation with the CURRENT quadrant, the robot turns 90 degrees twice (and crosses the tapes twice). I set the constant for each quadrant in a special way, so that if the target quadrant is in the diagonal, addition of the two quadrants = 5. This is just to simplify the code, so we don't have to hard code for each specific quadrant.
+  c)if the QUADRANT is in a diagonal relation with the CURRENT quadrant, the robot turns 90 degrees twice (and crosses the tapes twice). I set the constant for each quadrant in a special way, so that if the target quadrant is in the diagonal, addition of the two quadrants = 5. This is just to simplify the code, so we don't have to hard code for each specific quadrant (or else we have to code four conditional statements for each equadrant, 16 in total. but in this case, we only have ot code four conditional statement for all the quadrant).
   
 ![relation](https://github.com/Vassar-Robot-Competition-2018/teamB/blob/master/Photos_and_Videos/Week11/Relations.PNG)
   
@@ -46,6 +46,8 @@ We have no clue about the robot's orientation in the current quadrant, so we don
       return Direction = 1;
     } else return Direction = 2;
   }
+  
+  Moreover, since the 3D printer won't corporate, we will just stick to the prototype we have and focus on the code
   
 ## Division of Labor
 **Steven Park**
