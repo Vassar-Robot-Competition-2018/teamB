@@ -16,10 +16,10 @@ Forced with no other choice, we decided to attach two more RGB sensors farther o
 These two RGB sensors are designed to only see the white tape. While Shihan and I initially had difficulty implementing two more RGB sensors to the Arduino, we managed to figure out how to get them to work thanks to the i2c library.
 
 Here is the final design of the robot body, which has changed significantly over the past several weeks.
-![Front](https://github.com/Vassar-Robot-Competition-2018/teamB/blob/master/Photos_and_Videos/Week11/Front.JPG)
-![Left](https://github.com/Vassar-Robot-Competition-2018/teamB/blob/master/Photos_and_Videos/Week11/Left.JPG)
-![Right](https://github.com/Vassar-Robot-Competition-2018/teamB/blob/master/Photos_and_Videos/Week11/Right.JPG)
-![Back](https://github.com/Vassar-Robot-Competition-2018/teamB/blob/master/Photos_and_Videos/Week11/Back.JPG)
+![Front](/Photos_and_Videos/Week11/Front.jpg)
+![Left](/Photos_and_Videos/Week11/Left.jpg)
+![Right](/Photos_and_Videos/Week11/Right.jpg)
+![Back](/Photos_and_Videos/Week11/Back.jpg)
 
 In regards to the code, since time was quickly running out, we were focused on finishing the main code for the robot, the one we would implement in the robot for the competition. 
 In the beginning, all three of us came up with an idea for the basic structure of the code and what type of behavior pattern the robot would perform.
@@ -57,7 +57,7 @@ We have no clue about the robot's orientation in the current quadrant, so we don
   b)Go back in a straight route if PREVIOUS = QUADRANT. this is kind of redundant, because the robot should have dropped the block previously, but just to make sure if there's an error. 
   c)if the QUADRANT is in a diagonal relation with the CURRENT quadrant, the robot turns 90 degrees twice (and crosses the tapes twice). I set the constant for each quadrant in a special way, so that if the target quadrant is in the diagonal, addition of the two quadrants = 5. This is just to simplify the code, so we don't have to hard code for each specific quadrant (or else we have to code four conditional statements for each equadrant, 16 in total. but in this case, we only have ot code four conditional statement for all the quadrant).
   
-![relation](https://github.com/Vassar-Robot-Competition-2018/teamB/blob/master/Photos_and_Videos/Week11/Relations.PNG)
+![relation](/Photos_and_Videos/Week11/Relations.PNG)
   
   the direction of turning (either left or right) depends on the relation function that I'll explain below(in (3)).
   d)else it means the QUADRANT is the next to the CURRENT (but it's not the PREVIOUS), the robot will turn 90 degrees once.
