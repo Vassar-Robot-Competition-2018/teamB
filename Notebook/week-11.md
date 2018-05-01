@@ -3,7 +3,32 @@
 ## Progress Made:
 
 ### Entry by Steven Park:
+With only a few days left until the robot competition, we entered the stage of robot building where we focused on finalizing both the design and the code.
 
+In regards to the body, I finally found a way to attach the bionicle pieces to the servo horns to act as the forearms that hold onto the block.
+First, I used the sautering iron to carefully melt two holes big enough to fit the screws I found in each of the servo horns.
+That way, I could hold the bionicle piece to the servo horn using a screw and nut combo. After a few attempts trying out different orientations for the arms, I finally arranged the arms so that when the move inward to hold the block, the ends of the arms touched and the arms themselves created a pointed end to push away other blocks.
+I also continued making more improvements to the robot body using bionicle pieces. For instance, I added attachments to better hold pieces in place so that the front has less of a likelihood of falling apart.
+Upon Shihan's request, I also made changes to prevent the RGB sensor from shaking so much when the robot moved, adding reinforcements so that the RGB could properly read the colors it detected.
+Finally, concerned that the battery may fall off the top of the robot due to the lack of room, I made a makeshift fence to hold everything on the top of the robot in place.
+However, the biggest design change was the decision to add two more RGB sensors. Upon observing the robot moving randomly in the arena, we discovered that the placement of the sole RGB sensor in the middle of the front of the robot make the robot vulnerable to getting stop along the edges of the arena. 
+Forced with no other choice, we decided to attach two more RGB sensors farther out on the front of the robot to detect the white tape before the center RGB. 
+These two RGB sensors are designed to only see the white tape. While Shihan and I initially had difficulty implementing two more RGB sensors to the Arduino, we managed to figure out how to get them to work thanks to the i2c library.
+
+Here is the final design of the robot body, which has changed significantly over the past several weeks.
+![Front](https://github.com/Vassar-Robot-Competition-2018/teamB/blob/master/Photos_and_Videos/Week11/Front.JPG)
+![Left](https://github.com/Vassar-Robot-Competition-2018/teamB/blob/master/Photos_and_Videos/Week11/Left.JPG)
+![Right](https://github.com/Vassar-Robot-Competition-2018/teamB/blob/master/Photos_and_Videos/Week11/Right.JPG)
+![Back](https://github.com/Vassar-Robot-Competition-2018/teamB/blob/master/Photos_and_Videos/Week11/Back.JPG)
+
+In regards to the code, since time was quickly running out, we were focused on finishing the main code for the robot, the one we would implement in the robot for the competition. 
+In the beginning, all three of us came up with an idea for the basic structure of the code and what type of behavior pattern the robot would perform.
+Shihan believed that the internal map would be the most effective in bringing the target block back to the home region. Wenxuan thought that it would be easier to use the RGB sensors to keep track of the location of the robot by storing what color the RGB sensor detected previously and what it detects currently.
+I personally thought that the easiest and most efficient solution would be for the robot to use the camera to find its way back to the home region instead of any kind of internal mapping system. 
+The way I imagined it was that the robot would search for the block by looking for a colored object that's smaller than a certain size parameter and then once it needs to return the block to the home region, it could use the camera to find a colored object that matches the color of the block yet bigger than the block.
+In essence, the robot would be able to differentiate between, say, a red block and red tape by the difference in size. Unfortunately, I suddenly realized that my idea would not work because once the robot is holding the block and needs to return to the home region, the block would block the camera vision, preventing the camera from seeing anything, much less the tape of the home region.
+So, we decided to combine Shihan and Wenxuan's idea together. The robot will use the internal map as its default strategy **but** use the RGB sensors to double-check and make sure that the internal map is working properly.
+For instance, if the robot reaches the end of its internal map path and yet the RGB sensors do not detect the appropriate colored tape of the home region, then the robot would know that the internal map messed up and proceed to carry out a different subroutine to reset the internal map.
 
 ### Entry by Shihan:
 
@@ -51,8 +76,9 @@ We have no clue about the robot's orientation in the current quadrant, so we don
   
 ## Division of Labor
 **Steven Park**
-- Worked on the robot body especially the arms
-- Helped with crimping 8 wires
+- Finished building and attaching the arms to the robot
+- Modified the robot body to increase stability and reduce shaking, improve balance, and prevent parts from falling off
+- Helped with crimping 8 wires for the RGB sensors
 
 **Wenxuan Guo**
 - Worked on the RGB sensor code for backup
@@ -60,3 +86,4 @@ We have no clue about the robot's orientation in the current quadrant, so we don
 
 **Shihan Zhao**
 - Worked on the internal map
+- Worked on the Arduino code and wiring that allowed the use of three RGB sensors
