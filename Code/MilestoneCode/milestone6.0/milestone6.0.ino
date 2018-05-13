@@ -140,8 +140,8 @@ void loop() {
 
 
 Drive(30, 30, 1);
-  //RGB();
-  //disp();
+  RGB();
+  disp();
 
 }
 
