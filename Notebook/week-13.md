@@ -34,6 +34,12 @@ As a result, we were able to accomplish a few of the milestones. Hopefully, we c
 **The Final Design of the Robot Body**
 ![Final Design](/Photos_and_Videos/Week13/Final_Body.JPG)
 
+***Update (5/14/18 @ 1:00am)***
+After what seems like forever, we have finally accomplished all the milestones. Several more changes were made to both the robot body and the code. For instance, we moved the side RGBs closer to the front because too much of the body was going past the white tape before EscapeBack was triggered, which caused the robot to get stuck.
+We also constructed a stopper that held the block close to the body of the robot to prevent the block from coming loose and slipping underneath the arms during EscapeBack.
+In addition, we added line-detecting sensors to the front of the robot so that the robot only returns home when the line-detecting sensor actually senses a block in its grasp.
+Minor adjustments also have been made such as modifying Drive so that the robot moves in a straight line. Many calibrations were also performed for both the camera and the RGB sensors since they seem to be affected by the smallest possible things.
+
 ### Entry by Shihan:
 
 
@@ -46,12 +52,14 @@ As a result, we were able to accomplish a few of the milestones. Hopefully, we c
 - Wrote the RGB homing function that combined Shihan and Wenxuan's ideas together to create a system that would direct the robot back home by creating a simple internal map using the RGB sensors.
 - Tried to write code that would replace the delay statements in the main code.
 - Helped with debugging the code.
+- Cleaned up the Master Code
 
 **Wenxuan Guo**
 - Helped with modifying the body of the robot
 - Helped with debugging the code
 - Worked on the RGB code
 - Tested the rest of the milestones
+- Worked on implementing the line-detecting sensors so that the robot makes sure that it's actually holding a block before returning to home region
 
 **Shihan Zhao**
 - Worked on the bulk of the coding, writing the main code and driving the debugging process
